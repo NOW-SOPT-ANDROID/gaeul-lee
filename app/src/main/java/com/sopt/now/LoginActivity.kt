@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         ActivityResultContracts.StartActivityForResult()
     ){
         if(it.resultCode == RESULT_OK){
-            val userInfo = it.data?.getSerializableExtra("userInfo") as UserData
+            val userInfo = it.data?.getSerializableExtra("userInfo") as? UserData
             userInfo?.let{users.add(it)}
         }
     }
@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
             val result = isLoginPossible(id, pwd)
             if(result != null){
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("login", users[result])
+                intent.putExtra("login", result)
                 startActivity(intent)
             }
 
@@ -46,10 +46,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun isLoginPossible(id: String, pwd: String): Int? {
-        var result : Int? = null
+    private fun isLoginPossible(id: String, pwd: String): UserData? {
+        var result : UserData? = null
         var message = ""
-        users.indices.forEach { user ->
+        users.forEach { user ->
             when {
                 user.id == id && user.pwd == pwd -> {
                     result = user

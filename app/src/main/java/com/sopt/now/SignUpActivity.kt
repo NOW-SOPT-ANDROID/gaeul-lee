@@ -23,7 +23,10 @@ class SignUpActivity : AppCompatActivity() {
             val nickname = binding.nicknameEditText.text.toString()
             val mbti = binding.mbtiEditText.text.toString()
 
-            if(isSignUpPossible(id, pwd, nickname, mbti)){
+            val (isPossible, message) = isSignUpPossible(id, pwd, nickname, mbti)
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            // 회원가입이 성공한 경우
+            if(isPossible){
                 val intent = Intent(this, LoginActivity::class.java)
                 val userInfo = UserData(id, pwd, nickname, mbti)
                 intent.putExtra("userInfo", userInfo)
@@ -33,20 +36,17 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun isSignUpPossible(id: String, pwd: String, nickname: String, mbti: String): Boolean {
-        var isPossible = false
+    private fun isSignUpPossible(id: String, pwd: String, nickname: String, mbti: String): Pair<Boolean, String> {
         val message = when{
             id.length !in 6..10 -> "ID는 6~10글자여야 합니다"
             pwd.length !in 8..12 -> "비밀번호는 8~12글자여야 합니다"
             nickname.isBlank() || nickname.contains(" ") -> "공백 없이 한글자 이상이어야 합니다."
             mbti.isBlank() -> "MBTI를 입력해주세요"
             else -> {
-                isPossible = true
-                "회원가입이 완료되었습니다."
+                return Pair(true, "회원가입이 완료되었습니다.")
             }
         }
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        return isPossible
+        return Pair(false, message)
     }
 }
