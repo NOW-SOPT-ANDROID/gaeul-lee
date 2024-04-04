@@ -1,6 +1,8 @@
 package com.sopt.now.compose
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
@@ -45,18 +50,19 @@ class SignUpActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    SignUp(navController = navController)
+                    SignUpScreen(navController = navController)
                 }
             }
         }
     }
 }
 @Composable
-fun SignUp(navController: NavController){
+fun SignUpScreen(navController: NavController){
     var userId by remember { mutableStateOf("") }
     var userPassword by remember { mutableStateOf("") }
     var userNickname by remember { mutableStateOf("") }
     var userMBTI by remember { mutableStateOf("") }
+    val context = LocalContext.current
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -114,22 +120,22 @@ fun SignUp(navController: NavController){
 
         Button(
             onClick = {
-                navController.navigate("login_screen"){
-                    launchSingleTop = true
-                    popUpTo("login_screen"){
-                        inclusive = true
+                if(isSignUpPossible(context, userId, userPassword, userNickname, userMBTI)){
+                    val userInfo = User(userId, userPassword, userNickname, userMBTI)
+                    val bundle = bundleOf("userInfo" to userInfo)
+                    Toast.makeText(context, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                    navController.navigate("login_screen/${bundle}"){
+                        launchSingleTop = true
+                        popUpTo("login_screen"){
+                            inclusive = true
+                        }
                     }
-                    /*this.arguments = bundleOf(
-                        "userId" to userId,
-                        "userPassword" to userPassword,
-                        "userNickname" to userNickname,
-                        "userMBTI" to userMBTI
-                    )*/
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
+                .align(Alignment.CenterHorizontally),
+            shape = RoundedCornerShape(10.dp)
         ){
             Text("회원가입 하기")
         }
@@ -137,10 +143,30 @@ fun SignUp(navController: NavController){
     }
 }
 
+fun isSignUpPossible(context: Context, userId: String, userPassword: String, userNickname: String, userMBTI: String): Boolean {
+    if(userId.length !in 6..10) {
+        Toast.makeText(context, "아이디는 6자 이상 10자 이하로 입력해주세요", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    if(userPassword.length !in 8..12){
+        Toast.makeText(context, "비밀번호는 8자 이상 12자 이하로 입력해주세요", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    if(userNickname.isBlank() || userNickname.contains(" ")) {
+        Toast.makeText(context, "닉네임은 공백 없이 입력해주세요", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    if(userMBTI.isBlank()) {
+        Toast.makeText(context, "MBTI를 입력해주세요", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    return true
+}
+
 @Preview(showBackground = true)
 @Composable
 fun SignUpPreview() {
     NOWSOPTAndroidTheme {
-        SignUp(navController = rememberNavController())
+        SignUpScreen(navController = rememberNavController())
     }
 }

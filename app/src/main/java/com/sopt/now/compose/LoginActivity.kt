@@ -1,7 +1,11 @@
 package com.sopt.now.compose
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.service.autofill.UserData
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,22 +51,21 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // NavHost 설정
+                    // 화면 전환을 위한 navController 생성
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "login_screen") {
                         // 로그인 화면 설정
-                        composable("login_screen") {navBackStackEntry ->
-                            val userId = navBackStackEntry.arguments?.getString("userId")
-                            val userPassword = navBackStackEntry.arguments?.getString("userPassword")
-                            val userNickname = navBackStackEntry.arguments?.getString("userNickname")
-                            val userMBTI = navBackStackEntry.arguments?.getString("userMBTI")
-                            LoginScreen(navController = navController)
+                        composable(route = "login_screen") { navBackStackEntry ->
+                            LoginScreen(
+                                navController = navController,
+                                user = navBackStackEntry.arguments?.get("user") as User?
+                            )
                         }
                         // 회원가입 화면 설정
-                        composable("signup_screen") {
-                            SignUp(navController = navController)
+                        composable(route = "signup_screen") {
+                            SignUpScreen(navController = navController)
                         }
-                        composable("main_screen"){
+                        composable(route = "main_screen") {
                             MainScreen(navController = navController)
                         }
                     }
@@ -70,10 +75,27 @@ class LoginActivity : ComponentActivity() {
     }
 }
 
+fun isLoginPossible(context : Context, id: String, pwd:String, userId : String, userPassword:String) : Boolean{
+    if(userId == "" || userPassword == "") {
+        Toast.makeText(context, "정보를 입력해주세요", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    if(!id.equals(userId)){
+        Toast.makeText(context, "아이디가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    if(!pwd.equals(userPassword)){
+        Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+        return false
+    }
+    else return true
+}
+
 @Composable
-fun LoginScreen(navController: NavController){
-    var userId by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
+fun LoginScreen(navController: NavController, user: User? = null){
+    var id by remember { mutableStateOf("") }
+    var pwd by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Column (
         modifier = Modifier
@@ -89,8 +111,8 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.weight(1f))
         Text("ID")
         TextField(
-            value = userId,
-            onValueChange = { userId = it },
+            value = id,
+            onValueChange = { id = it },
             placeholder = { Text("아이디를 입력해주세요") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -99,8 +121,8 @@ fun LoginScreen(navController: NavController){
 
         Text("비밀번호")
         TextField(
-            value = userPassword,
-            onValueChange = { userPassword = it },
+            value = pwd,
+            onValueChange = { pwd = it },
             placeholder = { Text("비밀번호를 입력해주세요") },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
@@ -111,8 +133,16 @@ fun LoginScreen(navController: NavController){
         Spacer(modifier = Modifier.weight(2f))
         Button(
             onClick = {
-                navController.navigate("main_screen")
+                if (user != null) {
+                    if(isLoginPossible(context, id, pwd, user.userId, user.userPassword)){
+                        Toast.makeText(context, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                        navController.navigate("main_screen")
+                    } else{
+
+                    }
+                }
             },
+            shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
@@ -122,6 +152,7 @@ fun LoginScreen(navController: NavController){
             onClick = {
                 navController.navigate("signup_screen")
             },
+            shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
