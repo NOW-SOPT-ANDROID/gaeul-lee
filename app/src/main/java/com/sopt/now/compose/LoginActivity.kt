@@ -1,5 +1,6 @@
 package com.sopt.now.compose
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +45,19 @@ import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 
 class LoginActivity : ComponentActivity() {
+    private val users : MutableList<User> = mutableListOf()
+
+    private val resultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            val userInfo = result.data?.getSerializableExtra("userInfo") as? User
+            userInfo?.let {
+                users.add(it)
+            }
+            Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,48 +67,56 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // 화면 전환을 위한 navController 생성
-                    val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "login_screen") {
-                        // 로그인 화면 설정
-                        composable(route = "login_screen") { navBackStackEntry ->
-                            LoginScreen(
-                                navController = navController,
-                                user = navBackStackEntry.arguments?.get("user") as User?
-                            )
+                    LoginScreen(
+                        onClickLoginBtn = {
+                            id, pwd ->
+                            val result = isLoginPossible(id, pwd)
+                            if(result != null){
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("login", result)
+                                startActivity(intent)
+                            }
+                        },
+                        onClickSignUpBtn = {
+                            val intent = Intent(this, SignUpActivity::class.java)
+                            resultLauncher.launch(intent)
                         }
-                        // 회원가입 화면 설정
-                        composable(route = "signup_screen") {
-                            SignUpScreen(navController = navController)
-                        }
-                        composable(route = "main_screen") {
-                            MainScreen(navController = navController)
-                        }
-                    }
+                    )
                 }
             }
         }
     }
-}
 
-fun isLoginPossible(context : Context, id: String, pwd:String, userId : String, userPassword:String) : Boolean{
-    if(userId == "" || userPassword == "") {
-        Toast.makeText(context, "정보를 입력해주세요", Toast.LENGTH_SHORT).show()
-        return false
+
+    fun isLoginPossible(id: String, pwd:String) : User? {
+        var result : User? = null
+        var message = ""
+        users.forEach { user ->
+            when {
+                user.id == id && user.pwd == pwd -> {
+                    result = user
+                    message = "로그인에 성공했습니다."
+                }
+                user.id == id && user.pwd != pwd -> {
+                    message = "비밀번호가 틀렸습니다."
+                }
+                user.id != id -> {
+                    message = "존재하지 않는 아이디입니다."
+                }
+            }
+        }
+        if(message != "") {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+        return result
     }
-    if(!id.equals(userId)){
-        Toast.makeText(context, "아이디가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-        return false
-    }
-    if(!pwd.equals(userPassword)){
-        Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
-        return false
-    }
-    else return true
 }
 
 @Composable
-fun LoginScreen(navController: NavController, user: User? = null){
+fun LoginScreen(
+    onClickLoginBtn : (String, String) -> Unit,
+    onClickSignUpBtn : () -> Unit
+){
     var id by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -133,14 +157,7 @@ fun LoginScreen(navController: NavController, user: User? = null){
         Spacer(modifier = Modifier.weight(2f))
         Button(
             onClick = {
-                if (user != null) {
-                    if(isLoginPossible(context, id, pwd, user.userId, user.userPassword)){
-                        Toast.makeText(context, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                        navController.navigate("main_screen")
-                    } else{
-
-                    }
-                }
+                onClickLoginBtn(id, pwd)
             },
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
@@ -150,7 +167,7 @@ fun LoginScreen(navController: NavController, user: User? = null){
             Text("로그인하기")}
         Button(
             onClick = {
-                navController.navigate("signup_screen")
+                onClickSignUpBtn()
             },
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
@@ -166,6 +183,7 @@ fun LoginScreen(navController: NavController, user: User? = null){
 @Composable
 fun LoginPreview() {
     NOWSOPTAndroidTheme {
-        LoginScreen(navController = rememberNavController())
+        LoginScreen(onClickLoginBtn = {id, pwd ->},
+            onClickSignUpBtn = {})
     }
 }

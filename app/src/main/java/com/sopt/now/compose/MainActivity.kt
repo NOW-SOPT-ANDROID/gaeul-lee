@@ -50,8 +50,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    MainScreen(navController = navController)
+                    val userInfo = intent.getSerializableExtra("login") as? User
+                    if(userInfo != null){
+                        MainScreen(user = userInfo)
                 }
             }
         }
@@ -59,9 +60,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(navController: NavController) {
-    var userId by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
+fun MainScreen(user: User) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,7 +77,7 @@ fun MainScreen(navController: NavController) {
                 colorFilter = ColorFilter.tint(Color.Green),
                 contentScale = ContentScale.Fit)
 
-            Text("Gaeul",
+            Text(text = user.nickname,
                 fontSize = 20.sp,
                 modifier = Modifier.align(Alignment.CenterVertically))
         }
@@ -87,13 +87,13 @@ fun MainScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(50.dp))
         Text("ID",
             fontSize = 30.sp)
-        Text("gaeulzzang",
+        Text(text = user.id,
             fontSize = 20.sp,
             color = Color.Gray)
         Spacer(modifier = Modifier.height(30.dp))
-        Text("비밀번호",
+        Text("Password",
             fontSize = 30.sp)
-        Text("sopt1234",
+        Text(text = user.pwd,
             fontSize = 20.sp,
             color = Color.Gray)
     }
@@ -104,6 +104,6 @@ fun MainScreen(navController: NavController) {
 @Composable
 fun MainPreview() {
     NOWSOPTAndroidTheme {
-        MainScreen(navController = rememberNavController())
+        MainScreen(user = User("id", "pwd", "nickname", "mbti"))
     }
-}
+}}
