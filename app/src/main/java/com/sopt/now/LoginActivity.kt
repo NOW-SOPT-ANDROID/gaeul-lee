@@ -49,16 +49,18 @@ class LoginActivity : AppCompatActivity() {
     private fun isLoginPossible(id: String, pwd: String): Int? {
         var result : Int? = null
         var message = ""
-        for(i in users.indices){
-            if(users[i].id == id){
-                if(users[i].pwd == pwd){
-                    result = i
+        users.indices.forEach { user ->
+            when {
+                user.id == id && user.pwd == pwd -> {
+                    result = user
                     message = "로그인에 성공했습니다."
-                } else{
+                }
+                user.id == id && user.pwd != pwd -> {
                     message = "비밀번호가 틀렸습니다."
                 }
-            } else{
-                message = "존재하지 않는 아이디입니다."
+                user.id != id -> {
+                    message = "존재하지 않는 아이디입니다."
+                }
             }
         }
         if(message != "") {
