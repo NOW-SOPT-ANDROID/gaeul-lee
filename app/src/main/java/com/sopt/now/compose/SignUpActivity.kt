@@ -31,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -62,7 +63,7 @@ class SignUpActivity : ComponentActivity() {
                         if(isPossible) {
                             val userInfo = User(id, pwd, nickname, mbti)
                             val intent = Intent()
-                            intent.putExtra("userInfo", userInfo)
+                            intent.putExtra("USER_INFO", userInfo)
                             setResult(Activity.RESULT_OK, intent)
                             finish()
                         }
@@ -103,7 +104,7 @@ fun SignUpScreen(
     ){
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "SIGN UP",
+            text = stringResource(id = R.string.signup_text),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
@@ -111,21 +112,21 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text("ID")
+        Text(stringResource(id = R.string.id_text))
         TextField(
             value = userId,
             onValueChange = { userId = it },
-            placeholder = { Text("아이디를 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.id_hint)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("비밀번호")
+        Text(stringResource(id = R.string.pw_text))
         TextField(
             value = userPassword,
             onValueChange = { userPassword = it },
-            placeholder = { Text("비밀번호를 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.pw_hint)) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -135,21 +136,21 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("닉네임")
+        Text(stringResource(id = R.string.nickname_text))
         TextField(
             value = userNickname,
             onValueChange = { userNickname = it },
-            placeholder = { Text("닉네임을 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.nickname_hint)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("MBTI")
+        Text(stringResource(id = R.string.mbti_text))
         TextField(
             value = userMBTI,
             onValueChange = { userMBTI = it },
-            placeholder = { Text("MBTI를 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.mbti_hint)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -164,7 +165,7 @@ fun SignUpScreen(
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(10.dp)
         ){
-            Text("회원가입 하기")
+            Text(stringResource(id = R.string.signup_btn_text))
         }
         Spacer(modifier = Modifier.height(30.dp))
     }

@@ -33,13 +33,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
-
+const val USER_INFO = "UserInfo"
+const val LOGIN_INFO = "LoginInfo"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val userInfo = intent.getSerializableExtra("login") as? User
+                    val userInfo = intent.getSerializableExtra("LOGIN_INFO") as? User
                     if(userInfo != null){
                         MainScreen(user = userInfo)
                 }
@@ -71,7 +73,9 @@ fun MainScreen(user: User) {
         Row(
             modifier = Modifier.fillMaxWidth()
         ){
-            Image(modifier = Modifier.size(100.dp).aspectRatio(1f),
+            Image(modifier = Modifier
+                .size(100.dp)
+                .aspectRatio(1f),
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "User Image",
                 colorFilter = ColorFilter.tint(Color.Green),
@@ -81,17 +85,19 @@ fun MainScreen(user: User) {
                 fontSize = 20.sp,
                 modifier = Modifier.align(Alignment.CenterVertically))
         }
-        Text(text = "안녕 나는 안드로이드 34기 YB야",
+        Text(text = stringResource(id = R.string.description),
             fontSize = 20.sp)
 
         Spacer(modifier = Modifier.height(50.dp))
-        Text("ID",
+        Text(
+            stringResource(id = R.string.id_text),
             fontSize = 30.sp)
         Text(text = user.id,
             fontSize = 20.sp,
             color = Color.Gray)
         Spacer(modifier = Modifier.height(30.dp))
-        Text("Password",
+        Text(
+            stringResource(id = R.string.pw_text),
             fontSize = 30.sp)
         Text(text = user.pwd,
             fontSize = 20.sp,

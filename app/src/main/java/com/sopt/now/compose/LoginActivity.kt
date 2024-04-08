@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,7 +51,7 @@ class LoginActivity : ComponentActivity() {
     private val resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         if(result.resultCode == Activity.RESULT_OK){
-            val userInfo = result.data?.getSerializableExtra("userInfo") as? User
+            val userInfo = result.data?.getSerializableExtra("USER_INFO") as? User
             userInfo?.let {
                 users.add(it)
             }
@@ -73,7 +74,7 @@ class LoginActivity : ComponentActivity() {
                             val result = isLoginPossible(id, pwd)
                             if(result != null){
                                 val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("login", result)
+                                intent.putExtra("LOGIN_INFO", result)
                                 startActivity(intent)
                             }
                         },
@@ -93,16 +94,17 @@ class LoginActivity : ComponentActivity() {
         var message = ""
         users.forEach { user ->
             when {
-                user.id == id && user.pwd == pwd -> {
-                    result = user
-                    message = "로그인에 성공했습니다."
-                }
-                user.id == id && user.pwd != pwd -> {
-                    message = "비밀번호가 틀렸습니다."
-                }
                 user.id != id -> {
                     message = "존재하지 않는 아이디입니다."
                 }
+                user.pwd != pwd -> {
+                    message = "비밀번호가 틀렸습니다."
+                }
+                else -> {
+                    result = user
+                    message = "로그인에 성공했습니다."
+                }
+
             }
         }
         if(message != "") {
@@ -119,7 +121,6 @@ fun LoginScreen(
 ){
     var id by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     Column (
         modifier = Modifier
@@ -128,26 +129,26 @@ fun LoginScreen(
     ){
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = "Welcome To SOPT",
+            text = stringResource(id = R.string.welcome_text),
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 30.sp
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text("ID")
+        Text(stringResource(id = R.string.id_text))
         TextField(
             value = id,
             onValueChange = { id = it },
-            placeholder = { Text("아이디를 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.id_hint)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("비밀번호")
+        Text(stringResource(id = R.string.pw_text))
         TextField(
             value = pwd,
             onValueChange = { pwd = it },
-            placeholder = { Text("비밀번호를 입력해주세요") },
+            placeholder = { Text(stringResource(id = R.string.pw_hint)) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -164,7 +165,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
         ){
-            Text("로그인하기")}
+            Text(stringResource(id = R.string.login_btn_text))}
         Button(
             onClick = {
                 onClickSignUpBtn()
@@ -174,7 +175,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
         ){
-            Text("회원가입 하기")}
+            Text(stringResource(id = R.string.signup_btn_text))}
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
