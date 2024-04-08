@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +45,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import com.sopt.now.compose.ui.theme.RoundedCornerButton
 
 class SignUpActivity : ComponentActivity() {
 
@@ -112,61 +115,50 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(stringResource(id = R.string.id_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.id_text,
             value = userId,
-            onValueChange = { userId = it },
-            placeholder = { Text(stringResource(id = R.string.id_hint)) },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = {userId = it},
+            placeholderTextId = R.string.id_hint
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text(stringResource(id = R.string.pw_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.pw_text,
             value = userPassword,
-            onValueChange = { userPassword = it },
-            placeholder = { Text(stringResource(id = R.string.pw_hint)) },
-            modifier = Modifier.fillMaxWidth(),
+            onValueChange = {userPassword = it},
+            placeholderTextId = R.string.pw_hint,
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Password
-            )
+            keyboardType = KeyboardType.Password
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text(stringResource(id = R.string.nickname_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.nickname_text,
             value = userNickname,
-            onValueChange = { userNickname = it },
-            placeholder = { Text(stringResource(id = R.string.nickname_hint)) },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = {userNickname = it},
+            placeholderTextId = R.string.nickname_hint
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text(stringResource(id = R.string.mbti_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.mbti_text,
             value = userMBTI,
-            onValueChange = { userMBTI = it },
-            placeholder = { Text(stringResource(id = R.string.mbti_hint)) },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = {userMBTI = it},
+            placeholderTextId = R.string.mbti_hint
         )
 
         Spacer(modifier = Modifier.weight(2f))
 
-        Button(
+        RoundedCornerButton(buttonText = R.string.signup_btn_text,
             onClick = {
                 onClickSignUpBtn(userId, userPassword, userNickname, userMBTI)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-            shape = RoundedCornerShape(10.dp)
-        ){
-            Text(stringResource(id = R.string.signup_btn_text))
-        }
+            }
+        )
+
         Spacer(modifier = Modifier.height(30.dp))
     }
 }

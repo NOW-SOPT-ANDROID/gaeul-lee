@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,7 +44,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import com.sopt.now.compose.ui.theme.RoundedCornerButton
 
 class LoginActivity : ComponentActivity() {
     private val users : MutableList<User> = mutableListOf()
@@ -55,7 +58,6 @@ class LoginActivity : ComponentActivity() {
             userInfo?.let {
                 users.add(it)
             }
-            Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -134,48 +136,36 @@ fun LoginScreen(
             fontSize = 30.sp
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(stringResource(id = R.string.id_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.id_text,
             value = id,
-            onValueChange = { id = it },
-            placeholder = { Text(stringResource(id = R.string.id_hint)) },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = {id = it} ,
+            placeholderTextId = R.string.id_hint
         )
-
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text(stringResource(id = R.string.pw_text))
-        TextField(
+        LabeledTextField(
+            labelTextId = R.string.pw_text,
             value = pwd,
-            onValueChange = { pwd = it },
-            placeholder = { Text(stringResource(id = R.string.pw_hint)) },
-            modifier = Modifier.fillMaxWidth(),
+            onValueChange = {pwd = it},
+            placeholderTextId = R.string.pw_hint,
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Password
-            )
+            keyboardType = KeyboardType.Password
         )
+
         Spacer(modifier = Modifier.weight(2f))
-        Button(
+        RoundedCornerButton(
+            buttonText = R.string.login_btn_text,
             onClick = {
                 onClickLoginBtn(id, pwd)
-            },
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-        ){
-            Text(stringResource(id = R.string.login_btn_text))}
-        Button(
+            }
+        )
+        RoundedCornerButton(
+            buttonText = R.string.signup_btn_text,
             onClick = {
                 onClickSignUpBtn()
-            },
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-        ){
-            Text(stringResource(id = R.string.signup_btn_text))}
+            }
+        )
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
