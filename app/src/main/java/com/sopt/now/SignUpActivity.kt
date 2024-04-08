@@ -17,6 +17,10 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        signUpBtnClick()
+    }
+
+    private fun signUpBtnClick() {
         binding.signUpBtn.setOnClickListener {
             val id = binding.idEditText.text.toString()
             val pwd = binding.passwordEditText.text.toString()
@@ -29,7 +33,7 @@ class SignUpActivity : AppCompatActivity() {
             if(isPossible){
                 val intent = Intent(this, LoginActivity::class.java)
                 val userInfo = UserData(id, pwd, nickname, mbti)
-                intent.putExtra("userInfo", userInfo)
+                intent.putExtra(USER_INFO, userInfo)
                 setResult(RESULT_OK, intent)
                 finish()
             }

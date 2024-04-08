@@ -8,6 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.sopt.now.databinding.ActivityMainBinding
 
+const val USER_INFO = "userInfo"
+const val LOGIN_INFO = "loginInfo"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var user : UserData
@@ -16,11 +18,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        user = intent.getSerializableExtra("login") as UserData
+        user = intent.getSerializableExtra(LOGIN_INFO) as UserData
 
-        binding.userNickname.text = user.nickname
-        binding.userId.text = user.id
-        binding.userPassword.text = user.pwd
-
+        with(binding){
+            userNickname.text = user.nickname
+            userId.text = user.id
+            userPassword.text = user.pwd
+        }
     }
 }

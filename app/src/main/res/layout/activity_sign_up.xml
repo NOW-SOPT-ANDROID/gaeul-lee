@@ -11,10 +11,10 @@
     tools:context=".SignUpActivity">
 
     <TextView
-        android:id="@+id/welcomeText"
+        android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN UP"
+        android:text="@string/sign_up_text"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,88 +22,88 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/idText"
+        android:id="@+id/id_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="ID"
+        android:text="@string/id_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
     <EditText
-        android:id="@+id/idEditText"
+        android:id="@+id/id_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="아이디를 입력해주세요"
+        android:hint="@string/id_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idText"/>
+        app:layout_constraintTop_toBottomOf="@+id/id_text"/>
 
     <TextView
-        android:id="@+id/passwordText"
+        android:id="@+id/password_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="비밀번호"
+        android:text="@string/password_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/id_editText" />
 
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/password_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="비밀번호를 입력해주세요"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
 
     <TextView
-        android:id="@+id/nicknameText"
+        android:id="@+id/nickname_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="닉네임"
+        android:text="@string/nickname_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/password_editText" />
 
     <EditText
-        android:id="@+id/nicknameEditText"
+        android:id="@+id/nickname_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="닉네임을 입력해주세요"
+        android:hint="@string/nickname_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nicknameText" />
+        app:layout_constraintTop_toBottomOf="@+id/nickname_text" />
 
     <TextView
-        android:id="@+id/mbtiText"
+        android:id="@+id/mbti_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="MBTI"
+        android:text="@string/mbti_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nicknameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/nickname_editText" />
 
     <EditText
-        android:id="@+id/mbtiEditText"
+        android:id="@+id/mbti_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="MBTI를 입력해주세요"
+        android:hint="@string/mbti_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mbtiText" />
+        app:layout_constraintTop_toBottomOf="@+id/mbti_text" />
 
     <Button
         android:id="@+id/signUpBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="회원가입하기"
+        android:text="@string/sign_up_btn_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,8 +19,9 @@ class LoginActivity : AppCompatActivity() {
     private val resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){
-        if(it.resultCode == RESULT_OK){
-            val userInfo = it.data?.getSerializableExtra("userInfo") as? UserData
+        activityResult ->
+        if(activityResult.resultCode == RESULT_OK){
+            val userInfo = activityResult.data?.getSerializableExtra(USER_INFO) as? UserData
             userInfo?.let{users.add(it)}
         }
     }
@@ -29,20 +31,27 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        loginBtnClick()
+        signUpBtnClick()
+    }
+
+    private fun signUpBtnClick() {
+        binding.signUpBtn.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            resultLauncher.launch(intent)
+        }
+    }
+
+    private fun loginBtnClick() {
         binding.loginBtn.setOnClickListener {
             val id = binding.idEditText.text.toString()
             val pwd = binding.passwordEditText.text.toString()
             val result = isLoginPossible(id, pwd)
             if(result != null){
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("login", result)
+                intent.putExtra(LOGIN_INFO, result)
                 startActivity(intent)
             }
-
-        }
-        binding.signUpBtn.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            resultLauncher.launch(intent)
         }
     }
 
@@ -51,16 +60,17 @@ class LoginActivity : AppCompatActivity() {
         var message = ""
         users.forEach { user ->
             when {
-                user.id == id && user.pwd == pwd -> {
-                    result = user
-                    message = "로그인에 성공했습니다."
-                }
-                user.id == id && user.pwd != pwd -> {
-                    message = "비밀번호가 틀렸습니다."
-                }
                 user.id != id -> {
                     message = "존재하지 않는 아이디입니다."
                 }
+                user.pwd != pwd -> {
+                    message = "비밀번호가 틀렸습니다."
+                }
+                else -> {
+                    result = user
+                    message = "로그인에 성공했습니다."
+                }
+
             }
         }
         if(message != "") {

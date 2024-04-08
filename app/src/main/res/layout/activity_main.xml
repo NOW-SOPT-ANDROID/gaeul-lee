@@ -11,24 +11,24 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/userProfile"
+        android:id="@+id/user_profile"
         android:src="@drawable/ic_launcher_foreground"
         app:tint="@color/pink"
         android:layout_width="100dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/userNickname"
+        android:id="@+id/user_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="33dp"
-        android:text="nickname"
+        tools:text="nickname"
         android:textStyle="bold"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/userProfile"
+        app:layout_constraintStart_toEndOf="@+id/user_profile"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -38,46 +38,46 @@
         android:text="안녕, 나는 SOPT 34기 안드로이드 YB야"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/user_profile" />
 
     <TextView
-        android:id="@+id/idText"
+        android:id="@+id/id_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="ID"
+        android:text="@string/id_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
     <TextView
-        android:id="@+id/userId"
+        android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="gaeulzzang"
+        tools:text="gaeulzzang"
         android:textColor="@color/gray"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idText" />
+        app:layout_constraintTop_toBottomOf="@+id/id_text" />
 
     <TextView
-        android:id="@+id/passwordText"
+        android:id="@+id/password_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="비밀번호"
+        android:text="@string/password_text"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userId" />
+        app:layout_constraintTop_toBottomOf="@+id/user_id" />
 
     <TextView
-        android:id="@+id/userPassword"
+        android:id="@+id/user_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1117"
+        tools:text="1117"
         android:textColor="@color/gray"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
