@@ -14,7 +14,7 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         when(viewType){
-            TYPE_HEADER -> {
+            TYPE_HEADER -> { // 맨 처음은 유저 프로필
                 val binding = ItemUserBinding.inflate(inflater, parent, false)
                 return UserViewHolder(binding)
             }
@@ -23,8 +23,6 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 return FriendViewHolder(binding)
             }
         }
-        val binding = ItemFriendBinding.inflate(inflater, parent, false)
-        return FriendViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
