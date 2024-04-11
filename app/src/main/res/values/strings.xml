@@ -12,4 +12,5 @@
     <string name="nickname_hint">닉네임을 입력해주세요</string>
     <string name="mbti_text">MBTI</string>
     <string name="mbti_hint">MBTI를 입력해주세요</string>
+    <string name="logout_btn_text">로그아웃</string>
 </resources>

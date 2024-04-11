@@ -1,15 +1,15 @@
-package com.sopt.now
+package com.sopt.now.activity
 
 import UserData
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
+import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
