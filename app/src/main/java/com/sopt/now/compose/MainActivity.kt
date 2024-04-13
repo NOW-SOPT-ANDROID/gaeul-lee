@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -62,8 +63,7 @@ import com.sopt.now.compose.fragment.MyPageFragment
 import com.sopt.now.compose.profileItem.FriendProfileItem
 import com.sopt.now.compose.profileItem.UserProfileItem
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
-const val USER_INFO = "UserInfo"
-const val LOGIN_INFO = "LoginInfo"
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +85,7 @@ class MainActivity : ComponentActivity() {
 }@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(user: User) {
+    var context = LocalContext.current
     var selectedItem by remember { mutableStateOf(0) }
     val items = listOf(
         BottomNavigationItem(
@@ -144,7 +145,7 @@ fun MainScreen(user: User) {
                     Text("검색")
                 }
                 2 -> {
-                    MyPageFragment(user = user)
+                    MyPageFragment(context, user = user)
                 }
 
             }
@@ -203,7 +204,10 @@ fun MainScreen(user: User) {
             selfDescription = "표정 풀자 ^^",
         ),
     )
-
+companion object{
+    const val USER_INFO = "UserInfo"
+    const val LOGIN_INFO = "LoginInfo"
+}
 
 @Preview(showBackground = true)
 @Composable

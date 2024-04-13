@@ -1,5 +1,7 @@
 package com.sopt.now.compose.fragment
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,11 +24,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.os.bundleOf
+import com.sopt.now.compose.LoginActivity
 import com.sopt.now.compose.R
 import com.sopt.now.compose.User
+import com.sopt.now.compose.ui.theme.RoundedCornerButton
 
 @Composable
-fun MyPageFragment(user: User){
+fun MyPageFragment(context: Context, user: User){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,5 +71,18 @@ fun MyPageFragment(user: User){
         Text(text = user.pwd,
             fontSize = 20.sp,
             color = Color.Gray)
+        Spacer(modifier = Modifier.weight(1f))
+        RoundedCornerButton(
+            buttonText = R.string.logout_btn_text,
+            onClick = {
+                onClickLogoutBtn(context, user)
+            }
+        )
+        Spacer(modifier = Modifier.height(30.dp))
     }
+}
+
+fun onClickLogoutBtn(context : Context, user : User) {
+    val intent = Intent(context, LoginActivity::class.java)
+    startActivity(context, intent, bundleOf("user" to user))
 }
