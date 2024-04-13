@@ -78,8 +78,8 @@ class SignUpActivity : ComponentActivity() {
 
     private fun isSignUpPossible(context: Context, userId : String, userPassword: String, userNickname: String, userMBTI: String): Boolean {
         val message = when {
-            userId.length !in 6..10 -> getString(R.string.signup_id_error)
-            userPassword.length !in 8..12 -> getString(R.string.signup_pw_error)
+            userId.length !in MIN_ID_LENGTH..MAX_ID_LENGTH -> getString(R.string.signup_id_error)
+            userPassword.length !in MIN_PW_LENGTH..MAX_PW_LENGTH -> getString(R.string.signup_pw_error)
             userNickname.isBlank() || userNickname.contains(" ") -> getString(R.string.signup_nickname_error)
             userMBTI.isBlank() -> getString(R.string.signup_mbti_error)
             else -> {
@@ -162,6 +162,13 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
+
+    companion object{
+        const val MIN_ID_LENGTH = 6
+        const val MAX_ID_LENGTH = 10
+        const val MIN_PW_LENGTH = 8
+        const val MAX_PW_LENGTH = 12
+    }
 
 @Preview(showBackground = true)
 @Composable
