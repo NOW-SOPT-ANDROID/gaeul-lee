@@ -21,7 +21,7 @@ fun FriendProfileItem(friend: Friend){
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 10.dp),
+            .padding(vertical = 20.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Icon(

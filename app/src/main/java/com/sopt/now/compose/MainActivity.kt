@@ -128,7 +128,6 @@ fun MainScreen(user: User) {
     ){
         innerPadding ->
         Column(modifier = Modifier.padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
             ){
 
             when(selectedItem){
