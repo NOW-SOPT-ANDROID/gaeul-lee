@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        user = intent.getSerializableExtra(LOGIN_INFO) as UserData
+        user = intent.getParcelableExtra<UserData>(LOGIN_INFO) as UserData
 
         val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
         if(currentFragment == null){

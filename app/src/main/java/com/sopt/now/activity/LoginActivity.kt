@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.R
 import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
 import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.databinding.ActivityLoginBinding
@@ -21,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     ){
         activityResult ->
         if(activityResult.resultCode == RESULT_OK){
-            val userInfo = activityResult.data?.getSerializableExtra(USER_INFO) as? UserData
+            val userInfo = activityResult.data?.getParcelableExtra<UserData>(USER_INFO)
             userInfo?.let{users.add(it)}
         }
     }
@@ -61,14 +62,14 @@ class LoginActivity : AppCompatActivity() {
         users.forEach { user ->
             when {
                 user.id != id -> {
-                    message = "존재하지 않는 아이디입니다."
+                    message = getString(R.string.login_id_error)
                 }
                 user.pwd != pwd -> {
-                    message = "비밀번호가 틀렸습니다."
+                    message = getString(R.string.login_password_error)
                 }
                 else -> {
                     result = user
-                    message = "로그인에 성공했습니다."
+                    message = getString(R.string.login_success)
                 }
 
             }

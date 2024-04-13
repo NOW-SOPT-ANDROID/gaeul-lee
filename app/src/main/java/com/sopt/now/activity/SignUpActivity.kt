@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.sopt.now.R
 import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.databinding.ActivitySignUpBinding
 
@@ -40,12 +41,12 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun isSignUpPossible(id: String, pwd: String, nickname: String, mbti: String): Pair<Boolean, String> {
         val message = when{
-            id.length !in 6..10 -> "ID는 6~10글자여야 합니다"
-            pwd.length !in 8..12 -> "비밀번호는 8~12글자여야 합니다"
-            nickname.isBlank() || nickname.contains(" ") -> "공백 없이 한글자 이상이어야 합니다."
-            mbti.isBlank() -> "MBTI를 입력해주세요"
+            id.length !in 6..10 -> getString(R.string.signup_id_error)
+            pwd.length !in 8..12 -> getString(R.string.signup_password_error)
+            nickname.isBlank() || nickname.contains(" ") -> getString(R.string.signup_nickname_error)
+            mbti.isBlank() -> getString(R.string.signup_mbti_error)
             else -> {
-                return Pair(true, "회원가입이 완료되었습니다.")
+                return Pair(true, getString(R.string.signup_success))
             }
         }
 
