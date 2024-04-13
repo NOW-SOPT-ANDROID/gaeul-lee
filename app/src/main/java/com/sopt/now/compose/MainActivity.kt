@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.camera.core.AspectRatio
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +18,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,11 +50,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.compose.rememberNavController
+import com.sopt.now.compose.fragment.MyPageFragment
+import com.sopt.now.compose.profileItem.FriendProfileItem
+import com.sopt.now.compose.profileItem.UserProfileItem
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 const val USER_INFO = "UserInfo"
 const val LOGIN_INFO = "LoginInfo"
@@ -59,51 +81,129 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
+}@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(user: User) {
+    var selectedItem by remember { mutableStateOf(0) }
+    val items = listOf(
+        BottomNavigationItem(
+            icon = Icons.Filled.Home,
+            label = "홈"
+        ),
+        BottomNavigationItem(
+            icon = Icons.Filled.Search,
+            label = "검색"
+        ),
+        BottomNavigationItem(
+            icon = Icons.Filled.Person,
+            label = "마이페이지"
+        )
+    )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 30.dp)
-    ){
-        Spacer(modifier = Modifier.height(30.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Image(modifier = Modifier
-                .size(100.dp)
-                .aspectRatio(1f),
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "User Image",
-                colorFilter = ColorFilter.tint(Color.Green),
-                contentScale = ContentScale.Fit)
-
-            Text(text = user.nickname,
-                fontSize = 20.sp,
-                modifier = Modifier.align(Alignment.CenterVertically))
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(stringResource(id = R.string.app_name))
+                }
+            )
+        },
+        bottomBar = {
+            NavigationBar {
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        icon = {Icon(item.icon, contentDescription = item.label)},
+                        label = {Text(item.label)},
+                        selected = selectedItem == index,
+                        onClick = {selectedItem = index}
+                    )
+                }
+            }
         }
-        Text(text = stringResource(id = R.string.description),
-            fontSize = 20.sp)
+    ){
+        innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            ){
 
-        Spacer(modifier = Modifier.height(50.dp))
-        Text(
-            stringResource(id = R.string.id_text),
-            fontSize = 30.sp)
-        Text(text = user.id,
-            fontSize = 20.sp,
-            color = Color.Gray)
-        Spacer(modifier = Modifier.height(30.dp))
-        Text(
-            stringResource(id = R.string.pw_text),
-            fontSize = 30.sp)
-        Text(text = user.pwd,
-            fontSize = 20.sp,
-            color = Color.Gray)
+            when(selectedItem){
+                0 -> {
+                    LazyColumn {
+                        items(friendList.size){
+                            if (it == 0){
+                                UserProfileItem(user = user)
+                            } else FriendProfileItem(friend = friendList[it])
+                        }
+                    }
+                }
+                1 -> {
+                    Text("검색")
+                }
+                2 -> {
+                    MyPageFragment(user = user)
+                }
+
+            }
+        }
     }
 }
+    val friendList = listOf<Friend>(
+        Friend(
+            profileImage = Icons.Filled.Face,
+            name = "",
+            selfDescription = ""
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "이의경",
+            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "우상욱",
+            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Favorite,
+            name = "배지현",
+            selfDescription = "표정 풀자 ^^",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "이의경",
+            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "우상욱",
+            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Favorite,
+            name = "배지현",
+            selfDescription = "표정 풀자 ^^",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "이의경",
+            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Person,
+            name = "우상욱",
+            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
+        ),
+        Friend(
+            profileImage = Icons.Filled.Favorite,
+            name = "배지현",
+            selfDescription = "표정 풀자 ^^",
+        ),
+    )
 
 
 @Preview(showBackground = true)

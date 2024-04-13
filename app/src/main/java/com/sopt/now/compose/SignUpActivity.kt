@@ -78,12 +78,12 @@ class SignUpActivity : ComponentActivity() {
 
     private fun isSignUpPossible(context: Context, userId : String, userPassword: String, userNickname: String, userMBTI: String): Boolean {
         val message = when {
-            userId.length !in 6..10 -> "아이디는 6자 이상 10자 이하로 입력해주세요"
-            userPassword.length !in 8..12 -> "비밀번호는 8자 이상 12자 이하로 입력해주세요"
-            userNickname.isBlank() || userNickname.contains(" ") -> "닉네임은 공백 없이 입력해주세요"
-            userMBTI.isBlank() -> "MBTI를 입력해주세요"
+            userId.length !in 6..10 -> getString(R.string.signup_id_error)
+            userPassword.length !in 8..12 -> getString(R.string.signup_pw_error)
+            userNickname.isBlank() || userNickname.contains(" ") -> getString(R.string.signup_nickname_error)
+            userMBTI.isBlank() -> getString(R.string.signup_mbti_error)
             else -> {
-                Toast.makeText(this,"회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.signup_success), Toast.LENGTH_SHORT).show()
                 return true
             }
         }

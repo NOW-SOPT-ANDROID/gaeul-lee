@@ -97,14 +97,14 @@ class LoginActivity : ComponentActivity() {
         users.forEach { user ->
             when {
                 user.id != id -> {
-                    message = "존재하지 않는 아이디입니다."
+                    message = getString(R.string.login_id_error)
                 }
                 user.pwd != pwd -> {
-                    message = "비밀번호가 틀렸습니다."
+                    message = getString(R.string.login_pw_error)
                 }
                 else -> {
                     result = user
-                    message = "로그인에 성공했습니다."
+                    message = getString(R.string.login_success)
                 }
 
             }
