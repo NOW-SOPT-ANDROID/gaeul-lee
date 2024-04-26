@@ -63,6 +63,7 @@ import com.sopt.now.compose.fragment.MyPageFragment
 import com.sopt.now.compose.profileItem.FriendProfileItem
 import com.sopt.now.compose.profileItem.UserProfileItem
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
+import com.sopt.now.compose.viewmodel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,58 +153,9 @@ fun MainScreen(user: User) {
         }
     }
 }
-    val friendList = listOf<Friend>(
-        Friend(
-            profileImage = Icons.Filled.Face,
-            name = "",
-            selfDescription = ""
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Favorite,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Favorite,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지?",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Person,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = Icons.Filled.Favorite,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-    )
+    val viewmodel = HomeViewModel()
+    val friendList = viewmodel.mockFriendList
+
 companion object{
     const val USER_INFO = "UserInfo"
     const val LOGIN_INFO = "LoginInfo"

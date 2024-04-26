@@ -27,7 +27,7 @@ fun UserProfileItem(user: User) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 10.dp, horizontal = 10.dp)
+            .padding(10.dp)
             .background(color = colorResource(id = R.color.pink)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
