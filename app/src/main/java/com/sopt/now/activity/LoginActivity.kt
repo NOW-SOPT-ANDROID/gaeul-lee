@@ -1,28 +1,26 @@
-package com.sopt.now
+package com.sopt.now.activity
 
 import UserData
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
+import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
+import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val users : MutableList<UserData> = mutableListOf()
+    private val users: MutableList<UserData> = mutableListOf()
 
     private val resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ){
-        activityResult ->
-        if(activityResult.resultCode == RESULT_OK){
-            val userInfo = activityResult.data?.getSerializableExtra(USER_INFO) as? UserData
-            userInfo?.let{users.add(it)}
+    ) { activityResult ->
+        if (activityResult.resultCode == RESULT_OK) {
+            val userInfo = activityResult.data?.getParcelableExtra<UserData>(USER_INFO)
+            userInfo?.let { users.add(it) }
         }
     }
 
@@ -47,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
             val id = binding.idEditText.text.toString()
             val pwd = binding.passwordEditText.text.toString()
             val result = isLoginPossible(id, pwd)
-            if(result != null){
+            if (result != null) {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(LOGIN_INFO, result)
                 startActivity(intent)
@@ -56,24 +54,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun isLoginPossible(id: String, pwd: String): UserData? {
-        var result : UserData? = null
+        var result: UserData? = null
         var message = ""
         users.forEach { user ->
             when {
                 user.id != id -> {
-                    message = "존재하지 않는 아이디입니다."
+                    message = getString(R.string.login_id_error)
                 }
+
                 user.pwd != pwd -> {
-                    message = "비밀번호가 틀렸습니다."
+                    message = getString(R.string.login_password_error)
                 }
+
                 else -> {
                     result = user
-                    message = "로그인에 성공했습니다."
+                    message = getString(R.string.login_success)
                 }
 
             }
         }
-        if(message != "") {
+        if (message != "") {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
         return result
