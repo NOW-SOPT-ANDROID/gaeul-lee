@@ -17,13 +17,13 @@ import androidx.compose.ui.unit.sp
 import com.sopt.now.compose.Friend
 
 @Composable
-fun FriendProfileItem(friend: Friend){
+fun FriendProfileItem(friend: Friend) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 20.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Icon(
             modifier = Modifier.size(50.dp),
             imageVector = friend.profileImage,

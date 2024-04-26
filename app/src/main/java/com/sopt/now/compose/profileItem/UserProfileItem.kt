@@ -23,14 +23,14 @@ import com.sopt.now.compose.R
 import com.sopt.now.compose.User
 
 @Composable
-fun UserProfileItem(user: User){
+fun UserProfileItem(user: User) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp, horizontal = 10.dp)
             .background(color = colorResource(id = R.color.pink)),
         horizontalAlignment = Alignment.CenterHorizontally,
-    ){
+    ) {
         Icon(
             modifier = Modifier.size(60.dp),
             imageVector = Icons.Filled.Face,

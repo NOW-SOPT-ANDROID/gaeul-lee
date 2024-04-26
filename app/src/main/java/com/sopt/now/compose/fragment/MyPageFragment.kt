@@ -32,45 +32,57 @@ import com.sopt.now.compose.User
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
 
 @Composable
-fun MyPageFragment(context: Context, user: User){
+fun MyPageFragment(context: Context, user: User) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 30.dp)
-    ){
+    ) {
         Spacer(modifier = Modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth()
-        ){
-            Image(modifier = Modifier
-                .size(100.dp)
-                .aspectRatio(1f),
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(100.dp)
+                    .aspectRatio(1f),
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "User Image",
                 colorFilter = ColorFilter.tint(colorResource(id = R.color.pink)),
-                contentScale = ContentScale.Fit)
+                contentScale = ContentScale.Fit
+            )
 
-            Text(text = user.nickname,
+            Text(
+                text = user.nickname,
                 fontSize = 20.sp,
-                modifier = Modifier.align(Alignment.CenterVertically))
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
         }
-        Text(text = stringResource(id = R.string.description),
-            fontSize = 20.sp)
+        Text(
+            text = stringResource(id = R.string.description),
+            fontSize = 20.sp
+        )
 
         Spacer(modifier = Modifier.height(50.dp))
         Text(
             stringResource(id = R.string.id_text),
-            fontSize = 30.sp)
-        Text(text = user.id,
+            fontSize = 30.sp
+        )
+        Text(
+            text = user.id,
             fontSize = 20.sp,
-            color = Color.Gray)
+            color = Color.Gray
+        )
         Spacer(modifier = Modifier.height(30.dp))
         Text(
             stringResource(id = R.string.pw_text),
-            fontSize = 30.sp)
-        Text(text = user.pwd,
+            fontSize = 30.sp
+        )
+        Text(
+            text = user.pwd,
             fontSize = 20.sp,
-            color = Color.Gray)
+            color = Color.Gray
+        )
         Spacer(modifier = Modifier.weight(1f))
         RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
@@ -82,7 +94,7 @@ fun MyPageFragment(context: Context, user: User){
     }
 }
 
-fun onClickLogoutBtn(context : Context, user : User) {
+fun onClickLogoutBtn(context: Context, user: User) {
     val intent = Intent(context, LoginActivity::class.java)
     startActivity(context, intent, bundleOf("user" to user))
 }

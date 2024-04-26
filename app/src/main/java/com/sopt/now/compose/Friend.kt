@@ -6,4 +6,4 @@ data class Friend(
     val profileImage: ImageVector,
     val name: String,
     val selfDescription: String,
-    )
+)

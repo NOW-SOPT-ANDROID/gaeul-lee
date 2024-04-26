@@ -90,15 +90,15 @@ fun MainScreen(user: User) {
     val items = listOf(
         BottomNavigationItem(
             icon = Icons.Filled.Home,
-            label = "홈"
+            label = stringResource(id = R.string.bnv_home)
         ),
         BottomNavigationItem(
             icon = Icons.Filled.Search,
-            label = "검색"
+            label = stringResource(id = R.string.bnv_search)
         ),
         BottomNavigationItem(
             icon = Icons.Filled.Person,
-            label = "마이페이지"
+            label = stringResource(id = R.string.bnv_mypage)
         )
     )
 

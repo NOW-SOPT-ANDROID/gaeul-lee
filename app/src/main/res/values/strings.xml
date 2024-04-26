@@ -22,4 +22,7 @@
     <string name="login_pw_error">비밀번호가 틀렸습니다.</string>
     <string name="login_success">로그인에 성공했습니다.</string>
     <string name="logout_btn_text">로그아웃 하기</string>
+    <string name="bnv_home">홈</string>
+    <string name="bnv_search">검색</string>
+    <string name="bnv_mypage">마이페이지</string>
 </resources>
