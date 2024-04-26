@@ -9,15 +9,16 @@ import com.sopt.now.databinding.ItemUserBinding
 
 class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var friendList: List<Friend> = emptyList()
-    private var user = UserData("","","","")
+    private var user = UserData("", "", "", "")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        when(viewType){
+        when (viewType) {
             TYPE_HEADER -> { // 맨 처음은 유저 프로필
                 val binding = ItemUserBinding.inflate(inflater, parent, false)
                 return UserViewHolder(binding)
             }
+
             else -> {
                 val binding = ItemFriendBinding.inflate(inflater, parent, false)
                 return FriendViewHolder(binding)
@@ -26,10 +27,9 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is FriendViewHolder){
+        if (holder is FriendViewHolder) {
             holder.onBind(friendList[position])
-        }
-        else if(holder is UserViewHolder){
+        } else if (holder is UserViewHolder) {
             holder.onBind(user)
         }
     }
@@ -39,15 +39,15 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(position == 0) TYPE_HEADER else TYPE_ITEM
+        return if (position == 0) TYPE_HEADER else TYPE_ITEM
     }
 
-    fun setFriendList(friendList: List<Friend>){
+    fun setFriendList(friendList: List<Friend>) {
         this.friendList = friendList.toList()
         notifyDataSetChanged()
     }
 
-    fun setUser(userData: UserData){
+    fun setUser(userData: UserData) {
         user = userData
         notifyDataSetChanged()
     }

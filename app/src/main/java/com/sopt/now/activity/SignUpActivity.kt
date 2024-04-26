@@ -5,11 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.sopt.now.R
-import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.databinding.ActivitySignUpBinding
-import com.sopt.now.viewmodel.HomeViewModel
+import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.viewmodel.SignUpViewModel
 
 class SignUpActivity : AppCompatActivity() {
@@ -36,7 +33,7 @@ class SignUpActivity : AppCompatActivity() {
             Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show()
 
             // 회원가입이 성공한 경우
-            if(isPossible){
+            if (isPossible) {
                 viewModel.setUserInfo(userInfo) // 사용자 정보 설정
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.putExtra(USER_INFO, userInfo)

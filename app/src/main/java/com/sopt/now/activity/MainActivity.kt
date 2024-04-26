@@ -14,7 +14,7 @@ import com.sopt.now.fragment.SearchFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var user : UserData
+    private lateinit var user: UserData
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         user = intent.getParcelableExtra<UserData>(LOGIN_INFO) as UserData
 
         val currentFragment = supportFragmentManager.findFragmentById(binding.fcvHome.id)
-        if(currentFragment == null){
+        if (currentFragment == null) {
             supportFragmentManager.beginTransaction()
                 .add(binding.fcvHome.id, HomeFragment(user))
                 .commit()
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun clickBottomNavigation() {
         binding.bnvHome.setOnItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.menu_home -> {
                     replaceFragment(HomeFragment(user))
                     true
