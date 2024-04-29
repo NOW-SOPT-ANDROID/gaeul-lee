@@ -20,7 +20,7 @@ class SignUpViewModel : ViewModel() {
             user.id.length !in MIN_ID_LENGTH..MAX_ID_LENGTH -> R.string.signup_id_error
             user.pwd.length !in MIN_PWD_LENGTH..MAX_PWD_LENGTH -> R.string.signup_password_error
             user.nickname.isBlank() || user.nickname.contains(" ") -> R.string.signup_nickname_error
-            user.mbti.isBlank() -> R.string.signup_mbti_error
+            user.mbti.isBlank() -> R.string.signup_phone_number_error
             else -> {
                 return Pair(true, R.string.signup_success)
             }

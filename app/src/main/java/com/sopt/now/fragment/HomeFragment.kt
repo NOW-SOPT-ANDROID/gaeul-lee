@@ -11,7 +11,7 @@ import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.friend.FriendAdapter
 import com.sopt.now.viewmodel.HomeViewModel
 
-class HomeFragment(private val user: UserData) : Fragment() {
+class HomeFragment() : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding)
@@ -35,7 +35,7 @@ class HomeFragment(private val user: UserData) : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
         friendAdapter.setFriendList(viewModel.mockFriendList)
-        friendAdapter.setUser(user)
+        //friendAdapter.setUser(user)
     }
 
     override fun onDestroyView() {
