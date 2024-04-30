@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.sopt.now.R
 import com.sopt.now.ServicePool
 import com.sopt.now.activity.ChangePwdActivity
 import com.sopt.now.activity.LoginActivity
@@ -80,8 +82,18 @@ class MyPageFragment() : Fragment() {
 
     private fun logoutBtnClick() {
         binding.logoutBtn.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            activity?.startActivity(intent)
+            AlertDialog.Builder(requireContext()).run {
+                setTitle("로그아웃")
+                setMessage("로그아웃 하시겠습니까?")
+                setIcon(R.drawable.ic_pets_pink_24)
+                setPositiveButton("확인") { _, _ ->
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    activity?.startActivity(intent)
+                }
+                setNegativeButton("취소", null)
+                show()
+            }
+
         }
     }
 
