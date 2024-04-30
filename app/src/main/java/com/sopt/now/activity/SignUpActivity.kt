@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.RequestSignUpDto
-import com.sopt.now.ResponseSignUpDto
+import com.sopt.now.request.RequestSignUpDto
+import com.sopt.now.response.ResponseSignUpDto
 import com.sopt.now.ServicePool.authService
 import com.sopt.now.databinding.ActivitySignUpBinding
 import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
@@ -25,34 +25,11 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initViews()
-
-        //signUpBtnClick()
     }
 
     private fun initViews() {
         binding.signUpBtn.setOnClickListener {
             signUp()
-        }
-    }
-    private fun signUpBtnClick() {
-        binding.signUpBtn.setOnClickListener {
-            val id = binding.idEditText.text.toString()
-            val pwd = binding.passwordEditText.text.toString()
-            val nickname = binding.nicknameEditText.text.toString()
-            val mbti = binding.phoneEditText.text.toString()
-            val userInfo = UserData(id, pwd, nickname, mbti)
-
-            val (isPossible, message) = viewModel.isSignUpPossible(userInfo)
-            Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show()
-
-            // 회원가입이 성공한 경우
-            if (isPossible) {
-                viewModel.setUserInfo(userInfo) // 사용자 정보 설정
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra(USER_INFO, userInfo)
-                setResult(RESULT_OK, intent)
-                finish() // 화면 전환
-            }
         }
     }
 
@@ -72,12 +49,15 @@ class SignUpActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
                     Log.d("SignUp", "data: $data, userId: $userId")
+                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                    intent.putExtra(USER_INFO, userId)
+                    startActivity(intent)
                 } else {
                     val error = response.message()
-                    Log.e("test", response.message())
+                    Log.e("test", error)
                     Toast.makeText(
                         this@SignUpActivity,
-                        "로그인이 실패 $error",
+                        "회원가입 실패 $error",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }

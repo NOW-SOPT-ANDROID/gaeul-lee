@@ -8,7 +8,7 @@ class UserViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHo
     fun onBind(userData: UserData) {
         binding.run {
             tvName.text = userData.nickname
-            tvSelfDescription.text = "mbti는 ${userData.mbti}입니다."
+            tvSelfDescription.text = userData.phone
         }
     }
 }

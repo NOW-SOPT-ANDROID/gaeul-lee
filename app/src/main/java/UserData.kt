@@ -1,10 +1,10 @@
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class UserData(
-    var id: String,
-    var pwd: String,
-    var nickname: String,
-    var mbti: String
-) : Parcelable
+    val authenticationId: String,
+    val nickname: String,
+    val phone: String,
+)

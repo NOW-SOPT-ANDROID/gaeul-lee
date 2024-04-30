@@ -1,8 +1,11 @@
 package com.sopt.now
 
+import com.sopt.now.request.RequestLoginDto
+import com.sopt.now.request.RequestSignUpDto
+import com.sopt.now.response.ResponseLoginDto
+import com.sopt.now.response.ResponseSignUpDto
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface AuthService {

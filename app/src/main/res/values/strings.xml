@@ -24,5 +24,6 @@
     <string name="bnv_home">홈</string>
     <string name="bnv_search">검색</string>
     <string name="bnv_mypage">마이페이지</string>
+    <string name="pwd_edit_btn">비밀번호 변경</string>
 
 </resources>

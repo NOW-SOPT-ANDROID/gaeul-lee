@@ -9,7 +9,7 @@ import com.sopt.now.databinding.ItemUserBinding
 
 class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var friendList: List<Friend> = emptyList()
-    private var user = UserData("", "", "", "")
+    private var user = UserData("", "", "")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
