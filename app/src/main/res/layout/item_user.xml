@@ -3,48 +3,45 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp"
-    android:padding="5dp"
+    android:layout_margin="10dp"
+    android:paddingVertical="15dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/pink">
-
-    <ImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:scaleType="centerCrop"
-        android:layout_marginVertical="10dp"
-        android:src="@drawable/ic_pets_pink_24"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@drawable/pink_round_background">
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="8dp"
         tools:text="이가을"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-        app:layout_constraintStart_toEndOf="@id/iv_profile"
-        app:layout_constraintTop_toTopOf="@id/iv_profile" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/tv_self_description"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        tools:text="안녕 나는 안드로이드 YB야 잘부탁해"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/iv_profile" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+        tools:text="010-0000-0000" />
+
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="150dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/img"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_self_description" />
 </androidx.constraintlayout.widget.ConstraintLayout>

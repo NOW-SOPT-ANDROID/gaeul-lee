@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sopt.now.ServicePool
 import com.sopt.now.activity.MainActivity
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
+import com.sopt.now.friend.Friend
 import com.sopt.now.friend.FriendAdapter
+import com.sopt.now.response.ResponseFriendsDto
 import com.sopt.now.response.ResponseLoginDto
 import com.sopt.now.response.ResponseUserInfoDto
 import com.sopt.now.viewmodel.HomeViewModel
@@ -32,6 +35,7 @@ class HomeFragment() : Fragment() {
 
     private val viewModel = HomeViewModel()
     private lateinit var friendAdapter: FriendAdapter
+    val mockFriendList = mutableListOf<Friend>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +51,9 @@ class HomeFragment() : Fragment() {
         friendAdapter = FriendAdapter()
         binding.rvFriends.run {
             adapter = friendAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(), 2)
         }
-        friendAdapter.setFriendList(viewModel.mockFriendList)
+        getFriendsInfo()
         // 인텐트에서 userId 가져오기
         val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
         Log.e("HomeFragment", "userId: $userId")
@@ -57,6 +61,32 @@ class HomeFragment() : Fragment() {
             // 해당 userId로 서버에서 사용자 정보 가져오기
             getUserInfo(userId.toInt())
         }
+    }
+
+    private fun getFriendsInfo() {
+        ServicePool.friendService.getFriends(2).enqueue(object : Callback<ResponseFriendsDto> {
+
+            override fun onResponse(
+                call: Call<ResponseFriendsDto>,
+                response: Response<ResponseFriendsDto>
+            ) {
+                if (response.isSuccessful) {
+                    val friends = response.body()?.data
+                    Log.d("HomeViewModel", "friends: $friends")
+                    friends?.forEach { friend ->
+                        mockFriendList.add(Friend(friend.avatar, friend.firstName, friend.email))
+                    }
+                    friendAdapter.setFriendList(mockFriendList)
+                } else {
+                    Log.d("HomeViewModel", "response is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
+                Log.d("HomeViewModel", "onFailure: ${t.message}")
+            }
+
+        })
     }
 
     private fun getUserInfo(userId: Int) {

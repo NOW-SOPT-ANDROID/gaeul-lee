@@ -1,55 +1,46 @@
 package com.sopt.now.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sopt.now.R
+import com.sopt.now.ServicePool
 import com.sopt.now.friend.Friend
+import com.sopt.now.response.ResponseFriendsDto
+import com.sopt.now.response.ResponseUserInfoDto
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeViewModel : ViewModel() {
-    val mockFriendList = listOf<Friend>(
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지^&^",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지^&^",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "이의경",
-            selfDescription = "다들 빨리 끝내고 뒤풀이 가고 싶지^&^",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "우상욱",
-            selfDescription = "나보다 안드 잘하는 사람 있으면 나와봐",
-        ),
-        Friend(
-            profileImage = R.drawable.ic_person_white_24,
-            name = "배지현",
-            selfDescription = "표정 풀자 ^^",
-        ),
-    )
+    val mockFriendList = mutableListOf<Friend>()
+
+    init {
+        uploadFriends()
+    }
+    private fun uploadFriends(){
+        ServicePool.friendService.getFriends(2).enqueue(object : Callback<ResponseFriendsDto> {
+
+            override fun onResponse(
+                call: Call<ResponseFriendsDto>,
+                response: Response<ResponseFriendsDto>
+            ) {
+                if (response.isSuccessful) {
+                    val friends = response.body()?.data
+                    Log.d("HomeViewModel", "friends: $friends")
+                    friends?.forEach { friend ->
+                        mockFriendList.add(Friend(friend.avatar, friend.firstName, friend.email))
+                    }
+                } else {
+                    Log.d("HomeViewModel", "response is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
+                Log.d("HomeViewModel", "onFailure: ${t.message}")
+            }
+
+        })
+    }
+
 }

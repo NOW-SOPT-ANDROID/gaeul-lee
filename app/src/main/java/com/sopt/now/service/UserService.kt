@@ -1,4 +1,4 @@
-package com.sopt.now
+package com.sopt.now.service
 
 import com.sopt.now.response.ResponseUserInfoDto
 import retrofit2.Call
