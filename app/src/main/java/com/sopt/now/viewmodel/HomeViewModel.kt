@@ -1,13 +1,10 @@
 package com.sopt.now.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.R
 import com.sopt.now.ServicePool
 import com.sopt.now.friend.Friend
 import com.sopt.now.response.ResponseFriendsDto
-import com.sopt.now.response.ResponseUserInfoDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +15,8 @@ class HomeViewModel : ViewModel() {
     init {
         uploadFriends()
     }
-    private fun uploadFriends(){
+
+    private fun uploadFriends() {
         ServicePool.friendService.getFriends(2).enqueue(object : Callback<ResponseFriendsDto> {
 
             override fun onResponse(

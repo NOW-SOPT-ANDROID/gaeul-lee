@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseUserInfoDto (
+data class ResponseUserInfoDto(
     @SerialName("code")
     val code: Int,
     @SerialName("message")

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -19,7 +18,7 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/id_text"
@@ -28,7 +27,7 @@
         android:layout_marginTop="60dp"
         android:text="@string/id_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
 
     <EditText
         android:id="@+id/id_editText"
@@ -37,7 +36,7 @@
         android:hint="@string/id_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/id_text" />
 
     <TextView
         android:id="@+id/password_text"
@@ -46,7 +45,7 @@
         android:layout_marginTop="30dp"
         android:text="@string/password_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_editText"/>
+        app:layout_constraintTop_toBottomOf="@+id/id_editText" />
 
     <EditText
         android:id="@+id/password_editText"
@@ -56,7 +55,7 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/password_text" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -72,8 +71,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sign_up_btn_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

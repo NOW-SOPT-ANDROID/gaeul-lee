@@ -1,6 +1,5 @@
 package com.sopt.now.activity
 
-import UserData
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import com.sopt.now.R
 import com.sopt.now.databinding.ActivityMainBinding
 import com.sopt.now.fragment.HomeFragment
 import com.sopt.now.fragment.MyPageFragment
-import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
 import com.sopt.now.fragment.SearchFragment
 
 

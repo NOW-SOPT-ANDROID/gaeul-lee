@@ -14,17 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="@string/previous_pwd_text"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_previous_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/previous_pwd_hint"
-        app:layout_constraintTop_toBottomOf="@+id/tv_previous_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_previous_pwd" />
 
     <TextView
         android:id="@+id/tv_new_pwd"
@@ -32,17 +32,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/new_pwd_text"
-        app:layout_constraintTop_toBottomOf="@+id/et_previous_pwd"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_previous_pwd" />
 
     <EditText
         android:id="@+id/et_new_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/previous_new_hint"
-        app:layout_constraintTop_toBottomOf="@+id/tv_new_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_new_pwd" />
 
     <TextView
         android:id="@+id/tv_check_pwd"
@@ -50,25 +50,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/new_check_text"
-        app:layout_constraintTop_toBottomOf="@+id/et_new_pwd"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_new_pwd" />
 
     <EditText
         android:id="@+id/et_check_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/previous_new_hint"
-        app:layout_constraintTop_toBottomOf="@+id/tv_check_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_check_pwd" />
 
     <Button
         android:id="@+id/btn_change_pwd"
-        android:text="@string/change_pwd_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/change_pwd_btn"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

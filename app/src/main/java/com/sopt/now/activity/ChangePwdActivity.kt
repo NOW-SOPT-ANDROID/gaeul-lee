@@ -1,22 +1,13 @@
 package com.sopt.now.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.sopt.now.R
 import com.sopt.now.ServicePool
 import com.sopt.now.databinding.ActivityChangePwdBinding
-import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.fragment.MyPageFragment
-import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
 import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.request.RequestChangePwdDto
-import com.sopt.now.request.RequestSignUpDto
 import com.sopt.now.response.ResponseChangePwdDto
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,7 +73,7 @@ class ChangePwdActivity : AppCompatActivity() {
         }
     }
 
-    private fun getChangePwdRequestDto() : RequestChangePwdDto{
+    private fun getChangePwdRequestDto(): RequestChangePwdDto {
         val previousId = binding.etPreviousPwd.text.toString()
         val newPwd = binding.etNewPwd.text.toString()
         val checkPwd = binding.etCheckPwd.text.toString()

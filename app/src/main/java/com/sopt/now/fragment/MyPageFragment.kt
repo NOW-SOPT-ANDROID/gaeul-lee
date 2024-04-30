@@ -1,6 +1,5 @@
 package com.sopt.now.fragment
 
-import UserData
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

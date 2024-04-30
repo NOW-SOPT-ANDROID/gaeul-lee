@@ -1,19 +1,15 @@
 package com.sopt.now.activity
 
-import UserData
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.R
-import com.sopt.now.request.RequestLoginDto
-import com.sopt.now.response.ResponseLoginDto
 import com.sopt.now.ServicePool
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
-import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
+import com.sopt.now.request.RequestLoginDto
+import com.sopt.now.response.ResponseLoginDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                 response: Response<ResponseLoginDto>,
             ) {
                 if (response.isSuccessful) {
-                    val data : ResponseLoginDto? = response.body()
+                    val data: ResponseLoginDto? = response.body()
                     val userId = response.headers()["location"]
                     Toast.makeText(
                         this@LoginActivity,

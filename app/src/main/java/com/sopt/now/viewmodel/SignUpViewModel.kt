@@ -1,10 +1,6 @@
 package com.sopt.now.viewmodel
 
-import UserData
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.R
 
 class SignUpViewModel : ViewModel() {
     companion object {
