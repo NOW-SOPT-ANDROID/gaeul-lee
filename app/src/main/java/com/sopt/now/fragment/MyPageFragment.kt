@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sopt.now.ServicePool
+import com.sopt.now.activity.ChangePwdActivity
 import com.sopt.now.activity.LoginActivity
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.response.ResponseUserInfoDto
@@ -21,6 +22,8 @@ class MyPageFragment() : Fragment() {
     private val binding: FragmentMyPageBinding
         get() = requireNotNull(_binding)
 
+    private var userId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,10 +35,10 @@ class MyPageFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
+        userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
         if (userId != null) {
             // 해당 userId로 서버에서 사용자 정보 가져오기
-            getUserInfo(userId.toInt())
+            getUserInfo(userId!!.toInt())
         }
         logoutBtnClick()
         changePasswordBtnClick()
@@ -70,7 +73,9 @@ class MyPageFragment() : Fragment() {
 
     private fun changePasswordBtnClick() {
         binding.btnEditPwd.setOnClickListener {
-
+            val intent = Intent(requireContext(), ChangePwdActivity::class.java)
+            intent.putExtra(USER_INFO, userId)
+            activity?.startActivity(intent)
         }
     }
 

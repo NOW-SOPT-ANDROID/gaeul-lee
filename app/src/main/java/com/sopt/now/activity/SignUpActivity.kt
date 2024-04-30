@@ -51,7 +51,7 @@ class SignUpActivity : AppCompatActivity() {
                     Log.d("SignUp", "data: $data, userId: $userId")
                     val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                     intent.putExtra(USER_INFO, userId)
-                    startActivity(intent)
+                    finish()
                 } else {
                     val error = response.message()
                     Log.e("test", error)
