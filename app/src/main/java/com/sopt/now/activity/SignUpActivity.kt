@@ -2,7 +2,6 @@ package com.sopt.now.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.ServicePool.authService
@@ -47,13 +46,11 @@ class SignUpActivity : AppCompatActivity() {
                         "회원가입 성공 유저의 ID는 $userId 입니둥",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    Log.d("SignUp", "data: $data, userId: $userId")
                     val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
                     intent.putExtra(USER_INFO, userId)
                     finish()
                 } else {
                     val error = response.message()
-                    Log.e("test", error)
                     Toast.makeText(
                         this@SignUpActivity,
                         "회원가입 실패 $error",

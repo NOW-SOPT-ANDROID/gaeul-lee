@@ -79,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
                         "로그인 성공 유저의 ID는 $userId 입니둥",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    Log.d("login", "data: $data, userId: $userId")
 
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.putExtra(LOGIN_INFO, userId)

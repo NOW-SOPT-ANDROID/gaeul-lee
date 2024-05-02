@@ -1,10 +1,10 @@
 package com.sopt.now.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sopt.now.ServicePool
@@ -47,7 +47,6 @@ class HomeFragment() : Fragment() {
         getFriendsInfo()
         // 인텐트에서 userId 가져오기
         val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
-        Log.e("HomeFragment", "userId: $userId")
         if (userId != null) {
             // 해당 userId로 서버에서 사용자 정보 가져오기
             getUserInfo(userId.toInt())
@@ -63,18 +62,18 @@ class HomeFragment() : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val friends = response.body()?.data
-                    Log.d("HomeViewModel", "friends: $friends")
                     friends?.forEach { friend ->
                         mockFriendList.add(Friend(friend.avatar, friend.firstName, friend.email))
                     }
                     friendAdapter.setFriendList(mockFriendList)
                 } else {
-                    Log.d("HomeViewModel", "response is not successful")
+                    Toast.makeText(requireContext(), "친구 목록을 불러오는 데 실패했습니다", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
-                Log.d("HomeViewModel", "onFailure: ${t.message}")
+                Toast.makeText(requireContext(), "실패", Toast.LENGTH_SHORT).show()
             }
 
         })
@@ -88,19 +87,18 @@ class HomeFragment() : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val data: ResponseUserInfoDto? = response.body()
-                    Log.d("login", "data: $data, userId: $userId")
                     data?.let {
                         friendAdapter.setUser(it.data)
                     }
 
                 } else {
                     val error = response.errorBody()
-                    Log.e("HomeFragment", "error: $error")
+                    Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                Log.e("HomeFragment", "onFailure: ${t.message}")
+                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
             }
 
         })

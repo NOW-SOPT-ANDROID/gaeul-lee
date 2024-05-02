@@ -2,10 +2,10 @@ package com.sopt.now.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.sopt.now.R
@@ -53,7 +53,6 @@ class MyPageFragment() : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val data: ResponseUserInfoDto? = response.body()
-                    Log.d("login", "data: $data, userId: $userId")
                     with(binding) {
                         tvUserNickname.text = data?.data?.nickname
                         tvDescription.text = data?.data?.phone
@@ -61,12 +60,12 @@ class MyPageFragment() : Fragment() {
 
                 } else {
                     val error = response.errorBody()
-                    Log.e("HomeFragment", "error: $error")
+                    Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                Log.e("HomeFragment", "onFailure: ${t.message}")
+                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
             }
 
         })

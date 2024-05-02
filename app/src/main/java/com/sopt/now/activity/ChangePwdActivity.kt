@@ -21,7 +21,6 @@ class ChangePwdActivity : AppCompatActivity() {
         binding = ActivityChangePwdBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userId = intent.getStringExtra(USER_INFO)
-        Log.e("ChangePwd", "userId: $userId")
         changePwdBtnClick()
     }
 
@@ -48,7 +47,6 @@ class ChangePwdActivity : AppCompatActivity() {
                             "비밀번호 변경 성공",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        Log.e("ChangePwd", "data: $data")
                         finish()
                     } else {
                         val error = response.message()
@@ -62,7 +60,6 @@ class ChangePwdActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ResponseChangePwdDto>, t: Throwable) {
-                    Log.e("test", t.message.toString())
                     Toast.makeText(
                         this@ChangePwdActivity,
                         "비밀번호 변경 실패",
