@@ -1,10 +1,10 @@
 package com.sopt.now.compose
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class User(
-    val id: String,
-    val pwd: String,
+    val authenticationId: String,
     val nickname: String,
-    val mbti: String
-) : Serializable
+    val phone: String
+)

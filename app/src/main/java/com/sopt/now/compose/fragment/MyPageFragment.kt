@@ -2,6 +2,7 @@ package com.sopt.now.compose.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,8 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,79 +29,145 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
+import coil.compose.AsyncImage
+import com.sopt.now.compose.ChangePasswordActivity
 import com.sopt.now.compose.LoginActivity
+import com.sopt.now.compose.MainActivity.Companion.LOGIN_INFO
 import com.sopt.now.compose.R
+import com.sopt.now.compose.ServicePool
 import com.sopt.now.compose.User
+import com.sopt.now.compose.response.ResponseUserInfoDto
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @Composable
-fun MyPageFragment(context: Context, user: User) {
+fun MyPageFragment(context: Context, userId: Int) {
+    var userInfo by remember { mutableStateOf<User?>(null) }
+
+    LaunchedEffect(userId) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                userInfo = getUserInfo(userId)
+            } catch (e: Exception) {
+                Log.e("MyPageFragment", "Error: ${e.message}")
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 30.dp)
+            .padding(horizontal = 30.dp, vertical = 10.dp)
     ) {
-        Spacer(modifier = Modifier.height(30.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                modifier = Modifier
-                    .size(100.dp)
-                    .aspectRatio(1f),
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ){
+            AsyncImage(
+                modifier = Modifier.size(150.dp),
+                model = "https://avatars.githubusercontent.com/u/91470334?v=4",
                 contentDescription = "User Image",
-                colorFilter = ColorFilter.tint(colorResource(id = R.color.pink)),
-                contentScale = ContentScale.Fit
             )
-
+            Spacer(modifier = Modifier.width(20.dp))
             Text(
-                text = user.nickname,
+                text = userInfo?.nickname ?: "",
                 fontSize = 20.sp,
-                modifier = Modifier.align(Alignment.CenterVertically)
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = stringResource(id = R.string.description),
+                fontSize = 20.sp,
+                color = Color.Gray
             )
         }
-        Text(
-            text = stringResource(id = R.string.description),
-            fontSize = 20.sp
-        )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
             stringResource(id = R.string.id_text),
-            fontSize = 30.sp
+            fontSize = 25.sp
         )
         Text(
-            text = user.id,
+            text = userInfo?.authenticationId ?: "",
             fontSize = 20.sp,
             color = Color.Gray
         )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Text(
-            stringResource(id = R.string.pw_text),
-            fontSize = 30.sp
+            stringResource(id = R.string.phone_text),
+            fontSize = 25.sp
         )
         Text(
-            text = user.pwd,
+            text = userInfo?.phone ?: "",
             fontSize = 20.sp,
             color = Color.Gray
         )
         Spacer(modifier = Modifier.weight(1f))
         RoundedCornerButton(
+            buttonText = R.string.change_pwd_btn_text,
+            onClick = {
+                onClickChangePwdBtn(context)
+            })
+        RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
             onClick = {
-                onClickLogoutBtn(context, user)
+                onClickLogoutBtn(context)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
+suspend fun getUserInfo(userId: Int): User {
+    return suspendCoroutine { continuation ->
+        ServicePool.userService.getUserInfo(userId).enqueue(object : Callback<ResponseUserInfoDto> {
+            override fun onResponse(
+                call: Call<ResponseUserInfoDto>,
+                response: Response<ResponseUserInfoDto>,
+            ) {
+                if (response.isSuccessful) {
+                    val data: ResponseUserInfoDto? = response.body()
+                    Log.d("MyPage", "data: $data, userId: $userId")
+                    data?.let {
+                        // 성공적으로 사용자 정보를 받아올 경우 continuation을 통해 결과 반환
+                        continuation.resume(User(it.data.authenticationId, it.data.nickname, it.data.phone))
+                    }
+                } else {
+                    val error = response.errorBody()
+                    Log.e("MyPage", "error: $error")
+                    // 오류 발생 시 예외를 전달하여 코루틴을 중단
+                    continuation.resumeWithException(Exception("Failed to fetch user info"))
+                }
+            }
 
-fun onClickLogoutBtn(context: Context, user: User) {
+            override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
+                Log.e("MyPage", "onFailure: ${t.message}")
+                // 실패 시 예외를 전달하여 코루틴을 중단
+                continuation.resumeWithException(t)
+            }
+        })
+    }
+}
+
+fun onClickChangePwdBtn(context: Context) {
+    val intent = Intent(context, ChangePasswordActivity::class.java)
+}
+
+fun onClickLogoutBtn(context: Context) {
     val intent = Intent(context, LoginActivity::class.java)
-    startActivity(context, intent, bundleOf("user" to user))
+    startActivity(context, intent, bundleOf(LOGIN_INFO to ""))
 }

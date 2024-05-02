@@ -14,8 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.sopt.now.compose.Friend
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun FriendProfileItem(friend: Friend) {
     Row(
@@ -24,10 +27,10 @@ fun FriendProfileItem(friend: Friend) {
             .padding(vertical = 20.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            modifier = Modifier.size(50.dp),
-            imageVector = friend.profileImage,
-            contentDescription = null
+        GlideImage(
+            modifier = Modifier.size(60.dp),
+            model = friend.profileImage,
+            contentDescription = "Friends Image",
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(

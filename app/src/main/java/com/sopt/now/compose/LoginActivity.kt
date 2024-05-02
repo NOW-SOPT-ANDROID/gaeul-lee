@@ -3,6 +3,7 @@ package com.sopt.now.compose
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,23 +29,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.MainActivity.Companion.LOGIN_INFO
+import com.sopt.now.compose.request.RequestLoginDto
+import com.sopt.now.compose.response.ResponseLoginDto
 import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : ComponentActivity() {
-    private val users: MutableList<User> = mutableListOf()
-
-    private val resultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val userInfo = result.data?.getSerializableExtra("USER_INFO") as? User
-            userInfo?.let {
-                users.add(it)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,16 +52,46 @@ class LoginActivity : ComponentActivity() {
                 ) {
                     LoginScreen(
                         onClickLoginBtn = { id, pwd ->
-                            val result = isLoginPossible(id, pwd)
-                            if (result != null) {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("LOGIN_INFO", result)
-                                startActivity(intent)
-                            }
+                            val loginRequest = getLoginRequestDto(id, pwd)
+                            ServicePool.authService.login(loginRequest).enqueue(object:
+                                Callback<ResponseLoginDto> {
+                                override fun onResponse(
+                                    call: Call<ResponseLoginDto>,
+                                    response: Response<ResponseLoginDto>
+                                ) {
+                                    if(response.isSuccessful) {
+                                        val data: ResponseLoginDto? = response.body()
+                                        val userId = response.headers()["location"]
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "로그인 성공 유저의 ID는 $userId 입니둥",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                        Log.e("login", "data: $data, userId: $userId")
+
+                                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                        intent.putExtra(LOGIN_INFO, userId)
+                                        startActivity(intent)
+                                    } else {
+                                        val error = response.message()
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "로그인이 실패 $error",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                    }
+                                }
+
+
+                                override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
+                                    Toast.makeText(this@LoginActivity, t.message.toString(), Toast.LENGTH_SHORT).show()
+                                }
+
+                            })
                         },
                         onClickSignUpBtn = {
                             val intent = Intent(this, SignUpActivity::class.java)
-                            resultLauncher.launch(intent)
+                            startActivity(intent)
                         }
                     )
                 }
@@ -74,31 +99,12 @@ class LoginActivity : ComponentActivity() {
         }
     }
 
+    private fun getLoginRequestDto(id: String, pwd: String): RequestLoginDto {
+        return RequestLoginDto(
+            authenticationId = id,
+            password = pwd,
+        )
 
-    fun isLoginPossible(id: String, pwd: String): User? {
-        var result: User? = null
-        var message = ""
-        users.forEach { user ->
-            when {
-                user.id != id -> {
-                    message = getString(R.string.login_id_error)
-                }
-
-                user.pwd != pwd -> {
-                    message = getString(R.string.login_pw_error)
-                }
-
-                else -> {
-                    result = user
-                    message = getString(R.string.login_success)
-                }
-
-            }
-        }
-        if (message != "") {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        }
-        return result
     }
 }
 

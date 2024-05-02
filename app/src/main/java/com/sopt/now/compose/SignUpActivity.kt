@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,9 +30,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sopt.now.compose.MainActivity.Companion.USER_INFO
+import com.sopt.now.compose.ServicePool.authService
+import com.sopt.now.compose.request.RequestSignUpDto
+import com.sopt.now.compose.response.ResponseSignUpDto
 import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignUpActivity : ComponentActivity() {
 
@@ -44,40 +52,53 @@ class SignUpActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SignUpScreen(onClickSignUpBtn = { id, pwd, nickname, mbti ->
-                        val isPossible = isSignUpPossible(this, id, pwd, nickname, mbti)
-                        if (isPossible) {
-                            val userInfo = User(id, pwd, nickname, mbti)
-                            val intent = Intent()
-                            intent.putExtra("USER_INFO", userInfo)
-                            setResult(Activity.RESULT_OK, intent)
-                            finish()
-                        }
+                    SignUpScreen(onClickSignUpBtn = { userId, userPassword, userNickname, userPhone ->
+                        val signUpRequest = getSignUpRequestDto(userId, userPassword, userNickname, userPhone)
+                        authService.signUp(signUpRequest).enqueue(object:
+                            Callback<ResponseSignUpDto> {
+                            override fun onResponse(
+                                call: Call<ResponseSignUpDto>,
+                                response: Response<ResponseSignUpDto>
+                            ) {
+                                if (response.isSuccessful) {
+                                    val data: ResponseSignUpDto? = response.body()
+                                    val userId = response.headers()["location"]
+                                    Toast.makeText(this@SignUpActivity,
+                                        "회원가입 성공 유저의 ID는 $userId 입니다.",
+                                        Toast.LENGTH_SHORT).show()
+                                    Log.d("SignUpActivity", "data: $data userId: $userId")
+                                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                                    intent.putExtra(USER_INFO, userId)
+                                    finish()
+                                } else {
+                                    val error = response.message()
+                                    Log.e("test", error)
+                                    Toast.makeText(
+                                        this@SignUpActivity,
+                                        "회원가입 실패 $error",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
                     })
                 }
             }
         }
     }
 
-    private fun isSignUpPossible(
-        context: Context,
-        userId: String,
-        userPassword: String,
-        userNickname: String,
-        userMBTI: String
-    ): Boolean {
-        val message = when {
-            userId.length !in MIN_ID_LENGTH..MAX_ID_LENGTH -> getString(R.string.signup_id_error)
-            userPassword.length !in MIN_PW_LENGTH..MAX_PW_LENGTH -> getString(R.string.signup_pw_error)
-            userNickname.isBlank() || userNickname.contains(" ") -> getString(R.string.signup_nickname_error)
-            userMBTI.isBlank() -> getString(R.string.signup_mbti_error)
-            else -> {
-                Toast.makeText(this, getString(R.string.signup_success), Toast.LENGTH_SHORT).show()
-                return true
-            }
-        }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        return false
+    private fun getSignUpRequestDto(userId: String, userPassword: String, userNickname: String, userPhone:String): RequestSignUpDto {
+        return RequestSignUpDto(
+            authenticationId = userId,
+            password = userPassword,
+            nickname = userNickname,
+            phone = userPhone,
+        )
     }
 
     @Composable
@@ -87,7 +108,7 @@ class SignUpActivity : ComponentActivity() {
         var userId by remember { mutableStateOf("") }
         var userPassword by remember { mutableStateOf("") }
         var userNickname by remember { mutableStateOf("") }
-        var userMBTI by remember { mutableStateOf("") }
+        var userPhone by remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier
@@ -134,17 +155,17 @@ class SignUpActivity : ComponentActivity() {
             Spacer(modifier = Modifier.height(30.dp))
 
             LabeledTextField(
-                labelTextId = R.string.mbti_text,
-                value = userMBTI,
-                onValueChange = { userMBTI = it },
-                placeholderTextId = R.string.mbti_hint
+                labelTextId = R.string.phone_text,
+                value = userPhone,
+                onValueChange = { userPhone = it },
+                placeholderTextId = R.string.phone_hint
             )
 
             Spacer(modifier = Modifier.weight(2f))
 
             RoundedCornerButton(buttonText = R.string.signup_btn_text,
                 onClick = {
-                    onClickSignUpBtn(userId, userPassword, userNickname, userMBTI)
+                    onClickSignUpBtn(userId, userPassword, userNickname, userPhone)
                 }
             )
 
@@ -163,7 +184,7 @@ class SignUpActivity : ComponentActivity() {
     @Composable
     fun SignUpPreview() {
         NOWSOPTAndroidTheme {
-            SignUpScreen(onClickSignUpBtn = { id, pwd, nickname, mbti -> })
+            SignUpScreen(onClickSignUpBtn = { _, _, _, _ ->})
         }
     }
 }
