@@ -1,10 +1,7 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.activity
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,8 +27,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sopt.now.compose.MainActivity.Companion.USER_INFO
+import com.sopt.now.compose.R
 import com.sopt.now.compose.ServicePool.authService
+import com.sopt.now.compose.activity.MainActivity.Companion.USER_INFO
 import com.sopt.now.compose.request.RequestSignUpDto
 import com.sopt.now.compose.response.ResponseSignUpDto
 import com.sopt.now.compose.ui.theme.LabeledTextField
@@ -53,26 +51,27 @@ class SignUpActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     SignUpScreen(onClickSignUpBtn = { userId, userPassword, userNickname, userPhone ->
-                        val signUpRequest = getSignUpRequestDto(userId, userPassword, userNickname, userPhone)
-                        authService.signUp(signUpRequest).enqueue(object:
+                        val signUpRequest =
+                            getSignUpRequestDto(userId, userPassword, userNickname, userPhone)
+                        authService.signUp(signUpRequest).enqueue(object :
                             Callback<ResponseSignUpDto> {
                             override fun onResponse(
                                 call: Call<ResponseSignUpDto>,
                                 response: Response<ResponseSignUpDto>
                             ) {
                                 if (response.isSuccessful) {
-                                    val data: ResponseSignUpDto? = response.body()
                                     val userId = response.headers()["location"]
-                                    Toast.makeText(this@SignUpActivity,
+                                    Toast.makeText(
+                                        this@SignUpActivity,
                                         "회원가입 성공 유저의 ID는 $userId 입니다.",
-                                        Toast.LENGTH_SHORT).show()
-                                    Log.d("SignUpActivity", "data: $data userId: $userId")
-                                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val intent =
+                                        Intent(this@SignUpActivity, LoginActivity::class.java)
                                     intent.putExtra(USER_INFO, userId)
                                     finish()
                                 } else {
                                     val error = response.message()
-                                    Log.e("test", error)
                                     Toast.makeText(
                                         this@SignUpActivity,
                                         "회원가입 실패 $error",
@@ -82,7 +81,11 @@ class SignUpActivity : ComponentActivity() {
                             }
 
                             override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                                TODO("Not yet implemented")
+                                Toast.makeText(
+                                    this@SignUpActivity,
+                                    "서버 통신 실패 ${t.message}",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
                             }
 
                         })
@@ -92,7 +95,12 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
-    private fun getSignUpRequestDto(userId: String, userPassword: String, userNickname: String, userPhone:String): RequestSignUpDto {
+    private fun getSignUpRequestDto(
+        userId: String,
+        userPassword: String,
+        userNickname: String,
+        userPhone: String
+    ): RequestSignUpDto {
         return RequestSignUpDto(
             authenticationId = userId,
             password = userPassword,
@@ -184,7 +192,7 @@ class SignUpActivity : ComponentActivity() {
     @Composable
     fun SignUpPreview() {
         NOWSOPTAndroidTheme {
-            SignUpScreen(onClickSignUpBtn = { _, _, _, _ ->})
+            SignUpScreen(onClickSignUpBtn = { _, _, _, _ -> })
         }
     }
 }

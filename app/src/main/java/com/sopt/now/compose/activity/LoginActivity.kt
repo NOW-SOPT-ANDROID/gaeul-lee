@@ -1,13 +1,10 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +26,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.sopt.now.compose.MainActivity.Companion.LOGIN_INFO
+import com.sopt.now.compose.R
+import com.sopt.now.compose.ServicePool
+import com.sopt.now.compose.activity.MainActivity.Companion.LOGIN_INFO
 import com.sopt.now.compose.request.RequestLoginDto
 import com.sopt.now.compose.response.ResponseLoginDto
 import com.sopt.now.compose.ui.theme.LabeledTextField
@@ -53,23 +52,22 @@ class LoginActivity : ComponentActivity() {
                     LoginScreen(
                         onClickLoginBtn = { id, pwd ->
                             val loginRequest = getLoginRequestDto(id, pwd)
-                            ServicePool.authService.login(loginRequest).enqueue(object:
+                            ServicePool.authService.login(loginRequest).enqueue(object :
                                 Callback<ResponseLoginDto> {
                                 override fun onResponse(
                                     call: Call<ResponseLoginDto>,
                                     response: Response<ResponseLoginDto>
                                 ) {
-                                    if(response.isSuccessful) {
-                                        val data: ResponseLoginDto? = response.body()
+                                    if (response.isSuccessful) {
                                         val userId = response.headers()["location"]
                                         Toast.makeText(
                                             this@LoginActivity,
                                             "로그인 성공 유저의 ID는 $userId 입니둥",
                                             Toast.LENGTH_SHORT,
                                         ).show()
-                                        Log.e("login", "data: $data, userId: $userId")
 
-                                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                        val intent =
+                                            Intent(this@LoginActivity, MainActivity::class.java)
                                         intent.putExtra(LOGIN_INFO, userId)
                                         startActivity(intent)
                                     } else {
@@ -84,7 +82,11 @@ class LoginActivity : ComponentActivity() {
 
 
                                 override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
-                                    Toast.makeText(this@LoginActivity, t.message.toString(), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        t.message.toString(),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                             })

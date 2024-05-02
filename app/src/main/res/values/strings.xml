@@ -26,4 +26,10 @@
     <string name="bnv_search">검색</string>
     <string name="bnv_mypage">마이페이지</string>
     <string name="change_pwd_btn_text">비밀번호 변경하기</string>
+    <string name="previous_pwd_text">기존 비밀번호</string>
+    <string name="previous_pwd_hint">기존 비밀번호를 입력해주세요</string>
+    <string name="new_pwd_text">새로운 비밀번호</string>
+    <string name="new_pwd_hint">새로운 비밀번호를 입력해주세요</string>
+    <string name="new_pwd_verification_text">비밀번호 확인</string>
+    <string name="new_pwd_verification_hint">새로운 비밀번호를 다시 입력해주세요</string>
 </resources>

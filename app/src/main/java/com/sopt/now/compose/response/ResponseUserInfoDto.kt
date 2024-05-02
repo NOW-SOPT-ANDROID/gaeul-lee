@@ -1,6 +1,6 @@
 package com.sopt.now.compose.response
 
-import com.sopt.now.compose.User
+import com.sopt.now.compose.data.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

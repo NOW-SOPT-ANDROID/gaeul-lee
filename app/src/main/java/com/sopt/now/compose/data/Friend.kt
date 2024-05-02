@@ -1,6 +1,4 @@
-package com.sopt.now.compose
-
-import androidx.compose.ui.graphics.vector.ImageVector
+package com.sopt.now.compose.data
 
 data class Friend(
     val profileImage: String,

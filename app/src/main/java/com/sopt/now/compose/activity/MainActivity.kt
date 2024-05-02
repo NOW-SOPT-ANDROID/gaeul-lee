@@ -1,4 +1,4 @@
-package com.sopt.now.compose
+package com.sopt.now.compose.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -32,6 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.sopt.now.compose.BottomNavigationItem
+import com.sopt.now.compose.R
+import com.sopt.now.compose.ServicePool
+import com.sopt.now.compose.data.Friend
+import com.sopt.now.compose.data.User
 import com.sopt.now.compose.fragment.MyPageFragment
 import com.sopt.now.compose.profileItem.FriendProfileItem
 import com.sopt.now.compose.profileItem.UserProfileItem
@@ -187,33 +192,40 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    suspend fun getUserInfo(userId: Int) : User{
+    suspend fun getUserInfo(userId: Int): User {
         return suspendCoroutine { continuation ->
-            ServicePool.userService.getUserInfo(userId).enqueue(object : Callback<ResponseUserInfoDto> {
-                override fun onResponse(
-                    call: Call<ResponseUserInfoDto>,
-                    response: Response<ResponseUserInfoDto>,
-                ) {
-                    if (response.isSuccessful) {
-                        val data: ResponseUserInfoDto? = response.body()
-                        Log.d("login", "data: $data, userId: $userId")
-                        data?.let {
-                            continuation.resume(User(it.data.authenticationId, it.data.nickname, it.data.phone))
+            ServicePool.userService.getUserInfo(userId)
+                .enqueue(object : Callback<ResponseUserInfoDto> {
+                    override fun onResponse(
+                        call: Call<ResponseUserInfoDto>,
+                        response: Response<ResponseUserInfoDto>,
+                    ) {
+                        if (response.isSuccessful) {
+                            val data: ResponseUserInfoDto? = response.body()
+                            Log.d("login", "data: $data, userId: $userId")
+                            data?.let {
+                                continuation.resume(
+                                    User(
+                                        it.data.authenticationId,
+                                        it.data.nickname,
+                                        it.data.phone
+                                    )
+                                )
+                            }
+
+                        } else {
+                            val error = response.errorBody()
+                            Log.e("HomeFragment", "error: $error")
+                            continuation.resumeWithException(Exception("Failed to fetch user info"))
                         }
-
-                    } else {
-                        val error = response.errorBody()
-                        Log.e("HomeFragment", "error: $error")
-                        continuation.resumeWithException(Exception("Failed to fetch user info"))
                     }
-                }
 
-                override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                    Log.e("HomeFragment", "onFailure: ${t.message}")
-                    continuation.resumeWithException(t)
-                }
+                    override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
+                        Log.e("HomeFragment", "onFailure: ${t.message}")
+                        continuation.resumeWithException(t)
+                    }
 
-            })
+                })
         }
 
     }
