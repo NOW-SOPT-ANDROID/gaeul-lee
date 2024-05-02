@@ -88,6 +88,7 @@ class MyPageFragment() : Fragment() {
                 setIcon(R.drawable.ic_pets_pink_24)
                 setPositiveButton("확인") { _, _ ->
                     val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     activity?.startActivity(intent)
                 }
                 setNegativeButton("취소", null)
