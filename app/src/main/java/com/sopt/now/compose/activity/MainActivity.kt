@@ -174,7 +174,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     if (response.isSuccessful) {
                         val friends = response.body()?.data
-                        Log.d("HomeViewModel", "friends: $friends")
                         friends?.forEach { friend ->
                             friendList.add(Friend(friend.avatar, friend.firstName, friend.email))
                         }
@@ -185,7 +184,6 @@ class MainActivity : ComponentActivity() {
                 }
 
                 override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
-                    Log.e("HomeViewModel", "onFailure: ${t.message}")
                     continuation.resumeWithException(t)
                 }
             })
@@ -202,7 +200,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         if (response.isSuccessful) {
                             val data: ResponseUserInfoDto? = response.body()
-                            Log.d("login", "data: $data, userId: $userId")
                             data?.let {
                                 continuation.resume(
                                     User(
@@ -215,13 +212,11 @@ class MainActivity : ComponentActivity() {
 
                         } else {
                             val error = response.errorBody()
-                            Log.e("HomeFragment", "error: $error")
                             continuation.resumeWithException(Exception("Failed to fetch user info"))
                         }
                     }
 
                     override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                        Log.e("HomeFragment", "onFailure: ${t.message}")
                         continuation.resumeWithException(t)
                     }
 

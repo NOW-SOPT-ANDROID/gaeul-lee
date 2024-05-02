@@ -181,13 +181,6 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
-    companion object {
-        const val MIN_ID_LENGTH = 6
-        const val MAX_ID_LENGTH = 10
-        const val MIN_PW_LENGTH = 8
-        const val MAX_PW_LENGTH = 12
-    }
-
     @Preview(showBackground = true)
     @Composable
     fun SignUpPreview() {

@@ -116,6 +116,7 @@ class ChangePwdActivity : ComponentActivity() {
                 .fillMaxSize()
                 .padding(30.dp)
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             LabeledTextField(
                 labelTextId = R.string.previous_pwd_text,
                 value = previousPwd,
@@ -151,7 +152,7 @@ class ChangePwdActivity : ComponentActivity() {
     @Composable
     fun SignUpPreview() {
         NOWSOPTAndroidTheme {
-
+            ChangePwdScreen(onClickChangePwdBtn = { _, _, _ -> })
         }
     }
 }

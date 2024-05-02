@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -166,6 +167,6 @@ fun onClickChangePwdBtn(context: Context, userId: Int) {
 
 fun onClickLogoutBtn(context: Context) {
     val intent = Intent(context, LoginActivity::class.java)
-    startActivity(context, intent, bundleOf(LOGIN_INFO to ""))
+    startActivity(context, intent, null)
 
 }
