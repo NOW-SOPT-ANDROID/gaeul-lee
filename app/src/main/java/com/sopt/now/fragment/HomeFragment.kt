@@ -24,7 +24,6 @@ class HomeFragment() : Fragment() {
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding)
 
-    private val viewModel = HomeViewModel()
     private lateinit var friendAdapter: FriendAdapter
     val mockFriendList = mutableListOf<Friend>()
 
