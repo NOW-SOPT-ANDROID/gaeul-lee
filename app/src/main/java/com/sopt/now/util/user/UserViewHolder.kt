@@ -1,0 +1,13 @@
+package com.sopt.now.util.user
+
+import androidx.recyclerview.widget.RecyclerView
+import com.sopt.now.databinding.ItemUserBinding
+
+class UserViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun onBind(user: User) {
+        binding.run {
+            tvName.text = user.nickname
+            tvSelfDescription.text = user.phone
+        }
+    }
+}
