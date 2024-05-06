@@ -1,12 +1,15 @@
 package com.sopt.now.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.sopt.now.R
 import com.sopt.now.ServicePool
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
@@ -15,6 +18,7 @@ import com.sopt.now.friend.FriendAdapter
 import com.sopt.now.response.ResponseFriendsDto
 import com.sopt.now.response.ResponseUserInfoDto
 import com.sopt.now.viewmodel.HomeViewModel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +29,8 @@ class HomeFragment() : Fragment() {
         get() = requireNotNull(_binding)
 
     private lateinit var friendAdapter: FriendAdapter
-    val mockFriendList = mutableListOf<Friend>()
+    val friendList = mutableListOf<Friend>()
+    val viewModel = HomeViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +48,7 @@ class HomeFragment() : Fragment() {
             adapter = friendAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
+        // viewModel.uploadFriends()
         getFriendsInfo()
         // 인텐트에서 userId 가져오기
         val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
@@ -62,17 +68,17 @@ class HomeFragment() : Fragment() {
                 if (response.isSuccessful) {
                     val friends = response.body()?.data
                     friends?.forEach { friend ->
-                        mockFriendList.add(Friend(friend.avatar, friend.firstName, friend.email))
+                        friendList.add(Friend(friend.avatar, friend.firstName, friend.email))
                     }
-                    friendAdapter.setFriendList(mockFriendList)
+                    friendAdapter.setFriendList(friendList)
                 } else {
-                    Toast.makeText(requireContext(), "친구 목록을 불러오는 데 실패했습니다", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), R.string.friends_error, Toast.LENGTH_SHORT)
                         .show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
-                Toast.makeText(requireContext(), "실패", Toast.LENGTH_SHORT).show()
+                Log.e("HomeFragment", t.message.toString())
             }
 
         })
@@ -97,7 +103,7 @@ class HomeFragment() : Fragment() {
             }
 
             override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                Toast.makeText(requireContext(), t.message.toString(), Toast.LENGTH_SHORT).show()
+                Log.e("HomeFragment", t.message.toString())
             }
 
         })
