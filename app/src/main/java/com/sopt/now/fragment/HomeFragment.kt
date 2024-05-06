@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sopt.now.R
@@ -29,8 +31,7 @@ class HomeFragment() : Fragment() {
         get() = requireNotNull(_binding)
 
     private lateinit var friendAdapter: FriendAdapter
-    val friendList = mutableListOf<Friend>()
-    val viewModel = HomeViewModel()
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,65 +49,21 @@ class HomeFragment() : Fragment() {
             adapter = friendAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
-        // viewModel.uploadFriends()
-        getFriendsInfo()
-        // 인텐트에서 userId 가져오기
+
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel.fetchFriends(2)
+
         val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
-        if (userId != null) {
-            // 해당 userId로 서버에서 사용자 정보 가져오기
-            getUserInfo(userId.toInt())
+        userId?.let {
+            viewModel.fetchUserInfo(it.toInt())
         }
-    }
 
-    private fun getFriendsInfo() {
-        ServicePool.friendService.getFriends(2).enqueue(object : Callback<ResponseFriendsDto> {
-
-            override fun onResponse(
-                call: Call<ResponseFriendsDto>,
-                response: Response<ResponseFriendsDto>
-            ) {
-                if (response.isSuccessful) {
-                    val friends = response.body()?.data
-                    friends?.forEach { friend ->
-                        friendList.add(Friend(friend.avatar, friend.firstName, friend.email))
-                    }
-                    friendAdapter.setFriendList(friendList)
-                } else {
-                    Toast.makeText(requireContext(), R.string.friends_error, Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
-                Log.e("HomeFragment", t.message.toString())
-            }
-
-        })
-    }
-
-    private fun getUserInfo(userId: Int) {
-        ServicePool.userService.getUserInfo(userId).enqueue(object : Callback<ResponseUserInfoDto> {
-            override fun onResponse(
-                call: Call<ResponseUserInfoDto>,
-                response: Response<ResponseUserInfoDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseUserInfoDto? = response.body()
-                    data?.let {
-                        friendAdapter.setUser(it.data)
-                    }
-
-                } else {
-                    val error = response.errorBody()
-                    Toast.makeText(requireContext(), error.toString(), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                Log.e("HomeFragment", t.message.toString())
-            }
-
-        })
+        viewModel.friendList.observe(viewLifecycleOwner) {
+            friendAdapter.setFriendList(it)
+        }
+        viewModel.userInfo.observe(viewLifecycleOwner) {
+            friendAdapter.setUser(it.data)
+        }
     }
 
 
