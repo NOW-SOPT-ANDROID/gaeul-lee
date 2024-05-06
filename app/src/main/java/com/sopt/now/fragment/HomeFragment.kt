@@ -23,7 +23,7 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
         }
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        viewModel.fetchFriends(2)
+        viewModel.fetchFriends(PAGE)
 
         val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
         userId?.let { viewModel.fetchUserInfo(it.toInt()) }
@@ -34,6 +34,10 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
         viewModel.userInfo.observe(viewLifecycleOwner) {
             friendAdapter.setUser(it.data)
         }
+    }
+
+    companion object {
+        const val PAGE = 2
     }
 
 }
