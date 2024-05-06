@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.ServicePool
+import com.sopt.now.api.ServicePool
 import com.sopt.now.friend.Friend
 import com.sopt.now.response.ResponseFriendsDto
 import com.sopt.now.response.ResponseUserInfoDto

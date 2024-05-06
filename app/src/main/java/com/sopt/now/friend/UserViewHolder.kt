@@ -1,6 +1,6 @@
 package com.sopt.now.friend
 
-import UserData
+import com.sopt.now.model.UserData
 import androidx.recyclerview.widget.RecyclerView
 import com.sopt.now.databinding.ItemUserBinding
 

@@ -1,6 +1,6 @@
 package com.sopt.now.response
 
-import UserData
+import com.sopt.now.model.UserData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

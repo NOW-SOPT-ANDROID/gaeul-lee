@@ -1,3 +1,5 @@
+package com.sopt.now.model
+
 import kotlinx.serialization.Serializable
 
 @Serializable

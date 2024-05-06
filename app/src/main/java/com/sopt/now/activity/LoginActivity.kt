@@ -6,25 +6,59 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.R
-import com.sopt.now.ServicePool
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.request.RequestLoginDto
-import com.sopt.now.response.ResponseLoginDto
+import com.sopt.now.viewmodel.LoginViewModel
 import com.sopt.now.viewmodel.MainViewModel.Companion.LOGIN_INFO
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        loginBtnClick()
+        observeLoginResult()
+        signUpBtnClick()
         backPressed()
-        initViews()
+    }
+
+    private fun observeLoginResult() {
+        viewModel.loginResult.observe(this) { success ->
+            if (success) {
+                Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(LOGIN_INFO, viewModel.userId.value)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, R.string.login_error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loginBtnClick() {
+        binding.loginBtn.setOnClickListener {
+            loginStateChanged()
+        }
+    }
+
+    private fun loginStateChanged() {
+        viewModel.login(
+            binding.idEditText.text.toString(),
+            binding.passwordEditText.text.toString(),
+        )
+    }
+
+    private fun signUpBtnClick() {
+        binding.signUpBtn.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun backPressed() {
@@ -42,67 +76,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
-    }
-
-    private fun initViews() {
-        binding.loginBtn.setOnClickListener {
-            login()
-        }
-        binding.signUpBtn.setOnClickListener {
-            signUpBtnClick()
-        }
-    }
-
-    private fun getLoginRequestDto(): RequestLoginDto {
-        val id = binding.idEditText.text.toString()
-        val password = binding.passwordEditText.text.toString()
-        return RequestLoginDto(
-            authenticationId = id,
-            password = password,
-        )
-    }
-
-    private fun login() {
-        val loginRequest = getLoginRequestDto()
-        ServicePool.authService.login(loginRequest).enqueue(object : Callback<ResponseLoginDto> {
-            override fun onResponse(
-                call: Call<ResponseLoginDto>,
-                response: Response<ResponseLoginDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseLoginDto? = response.body()
-                    val userId = response.headers()["location"]
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "로그인 성공 유저의 ID는 $userId 입니둥",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra(LOGIN_INFO, userId)
-                    startActivity(intent)
-                } else {
-                    val error = response.message()
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "로그인이 실패 $error",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, t.message.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-        })
-    }
-
-    private fun signUpBtnClick() {
-        binding.signUpBtn.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
-        }
     }
 
 }

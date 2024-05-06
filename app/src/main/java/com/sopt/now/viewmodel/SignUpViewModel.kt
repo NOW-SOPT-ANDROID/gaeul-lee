@@ -3,7 +3,7 @@ package com.sopt.now.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.ServicePool
+import com.sopt.now.api.ServicePool
 import com.sopt.now.request.RequestSignUpDto
 import com.sopt.now.response.ResponseSignUpDto
 import retrofit2.Call

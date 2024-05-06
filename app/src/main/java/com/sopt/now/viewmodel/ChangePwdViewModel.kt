@@ -1,12 +1,10 @@
 package com.sopt.now.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.R
-import com.sopt.now.ServicePool
+import com.sopt.now.api.ServicePool
 import com.sopt.now.request.RequestChangePwdDto
 import com.sopt.now.response.ResponseChangePwdDto
 import retrofit2.Call

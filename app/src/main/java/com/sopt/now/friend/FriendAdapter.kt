@@ -1,6 +1,6 @@
 package com.sopt.now.friend
 
-import UserData
+import com.sopt.now.model.UserData
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
