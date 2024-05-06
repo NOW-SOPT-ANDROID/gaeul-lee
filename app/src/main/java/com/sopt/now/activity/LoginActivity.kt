@@ -2,8 +2,6 @@ package com.sopt.now.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -11,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
 import com.sopt.now.ServicePool
 import com.sopt.now.databinding.ActivityLoginBinding
-import com.sopt.now.fragment.MyPageFragment.Companion.LOGIN_INFO
 import com.sopt.now.request.RequestLoginDto
 import com.sopt.now.response.ResponseLoginDto
+import com.sopt.now.viewmodel.MainViewModel.Companion.LOGIN_INFO
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,13 +28,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun backPressed() {
-        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 AlertDialog.Builder(this@LoginActivity)
                     .setTitle("앱 종료")
                     .setMessage("앱을 종료하시겠습니까?")
                     .setIcon(R.drawable.ic_pets_pink_24)
-                    .setPositiveButton("확인") { _, _->
+                    .setPositiveButton("확인") { _, _ ->
                         finish()
                     }
                     .setNegativeButton("취소", null)

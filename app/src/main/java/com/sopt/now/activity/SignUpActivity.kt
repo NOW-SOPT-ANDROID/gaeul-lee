@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.ServicePool.authService
 import com.sopt.now.databinding.ActivitySignUpBinding
-import com.sopt.now.fragment.MyPageFragment.Companion.USER_INFO
 import com.sopt.now.request.RequestSignUpDto
 import com.sopt.now.response.ResponseSignUpDto
+import com.sopt.now.viewmodel.MainViewModel.Companion.USER_INFO
 import com.sopt.now.viewmodel.SignUpViewModel
 import retrofit2.Call
 import retrofit2.Callback
