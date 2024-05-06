@@ -56,7 +56,7 @@ class ChangePwdActivity : AppCompatActivity() {
                 it.toInt(),
                 binding.etPreviousPwd.text.toString(),
                 binding.etNewPwd.text.toString(),
-                binding.etCheckPwd.text.toString()
+                binding.etNewPwdVerification.text.toString()
             )
         }
     }
