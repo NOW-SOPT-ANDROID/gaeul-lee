@@ -1,80 +1,53 @@
 package com.sopt.now.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.ServicePool.authService
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.sopt.now.R
 import com.sopt.now.databinding.ActivitySignUpBinding
-import com.sopt.now.request.RequestSignUpDto
-import com.sopt.now.response.ResponseSignUpDto
-import com.sopt.now.viewmodel.MainViewModel.Companion.USER_INFO
 import com.sopt.now.viewmodel.SignUpViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
 
-    private val viewModel = SignUpViewModel()
+    private lateinit var viewModel: SignUpViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initViews()
+
+        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
+        signUpBtnClick()
+        observeSignUpResult()
     }
 
-    private fun initViews() {
-        binding.signUpBtn.setOnClickListener {
-            signUp()
-        }
-    }
-
-    private fun signUp() {
-        val signUpRequest = getSignUpRequestDto()
-        authService.signUp(signUpRequest).enqueue(object : Callback<ResponseSignUpDto> {
-            override fun onResponse(
-                call: Call<ResponseSignUpDto>,
-                response: Response<ResponseSignUpDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseSignUpDto? = response.body()
-                    val userId = response.headers()["location"]
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "회원가입 성공 유저의 ID는 $userId 입니둥",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
-                    intent.putExtra(USER_INFO, userId)
-                    finish()
-                } else {
-                    val error = response.message()
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        "회원가입 실패 $error",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                Toast.makeText(this@SignUpActivity, t.message.toString(), Toast.LENGTH_SHORT).show()
+    private fun observeSignUpResult() {
+        viewModel.signUpResult.observe(this, Observer { success ->
+            if (success) {
+                Toast.makeText(this@SignUpActivity, R.string.signup_success, Toast.LENGTH_SHORT)
+                    .show()
+                finish()
+            } else {
+                Toast.makeText(this@SignUpActivity, R.string.signup_error, Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }
 
-    private fun getSignUpRequestDto(): RequestSignUpDto {
-        val id = binding.idEditText.text.toString()
-        val password = binding.passwordEditText.text.toString()
-        val nickname = binding.nicknameEditText.text.toString()
-        val phoneNumber = binding.phoneEditText.text.toString()
-        return RequestSignUpDto(
-            authenticationId = id,
-            password = password,
-            nickname = nickname,
-            phone = phoneNumber
+    private fun signUpBtnClick() {
+        binding.signUpBtn.setOnClickListener {
+            signUpStateChanged()
+        }
+    }
+
+    private fun signUpStateChanged() {
+        viewModel.signUp(
+            binding.idEditText.text.toString(),
+            binding.passwordEditText.text.toString(),
+            binding.nicknameEditText.text.toString(),
+            binding.phoneEditText.text.toString()
         )
     }
 }
