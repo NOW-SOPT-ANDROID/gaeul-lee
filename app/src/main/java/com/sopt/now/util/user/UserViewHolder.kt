@@ -1,14 +1,13 @@
-package com.sopt.now.friend
+package com.sopt.now.util.user
 
-import UserData
 import androidx.recyclerview.widget.RecyclerView
 import com.sopt.now.databinding.ItemUserBinding
 
 class UserViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun onBind(userData: UserData) {
+    fun onBind(user: User) {
         binding.run {
-            tvName.text = userData.nickname
-            tvSelfDescription.text = "mbti는 ${userData.mbti}입니다."
+            tvName.text = user.nickname
+            tvSelfDescription.text = user.phone
         }
     }
 }

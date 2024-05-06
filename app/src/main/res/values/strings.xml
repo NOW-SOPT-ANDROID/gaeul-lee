@@ -10,8 +10,8 @@
     <string name="sign_up_btn_text">회원가입 하기</string>
     <string name="nickname_text">닉네임</string>
     <string name="nickname_hint">닉네임을 입력해주세요</string>
-    <string name="mbti_text">MBTI</string>
-    <string name="mbti_hint">MBTI를 입력해주세요</string>
+    <string name="phone_number_text">전화번호</string>
+    <string name="phone_number_hint">전화번호를 입력해주세요</string>
     <string name="logout_btn_text">로그아웃</string>
     <string name="login_id_error">존재하지 않는 아이디입니다.</string>
     <string name="login_password_error">비밀번호가 틀렸습니다.</string>
@@ -19,10 +19,22 @@
     <string name="signup_id_error">ID는 6~10글자여야 합니다</string>
     <string name="signup_password_error">비밀번호는 8~12글자여야 합니다</string>
     <string name="signup_nickname_error">공백 없이 한글자 이상이어야 합니다.</string>
-    <string name="signup_mbti_error">MBTI를 입력해주세요</string>
+    <string name="signup_phone_number_error">010-XXXX-XXXX 형태로 입력해주세요</string>
     <string name="signup_success">회원가입이 완료되었습니다.</string>
     <string name="bnv_home">홈</string>
     <string name="bnv_search">검색</string>
     <string name="bnv_mypage">마이페이지</string>
+    <string name="pwd_edit_btn">비밀번호 변경</string>
+    <string name="previous_pwd_text">기존 비밀번호</string>
+    <string name="previous_pwd_hint">기존 비밀번호를 작성해주세요</string>
+    <string name="new_pwd_text">새로운 비밀번호</string>
+    <string name="previous_new_hint">새로운 비밀번호를 작성해주세요</string>
+    <string name="new_check_text">비밀번호 확인</string>
+    <string name="change_pwd_btn">비밀번호 변경하기</string>
+    <string name="friends_error">친구 목록을 불러오는 데 실패했습니다.</string>
+    <string name="change_pwd_success">비밀번호 변경에 성공했습니다</string>
+    <string name="change_pwd_fail">비밀번호 변경에 실패했습니다</string>
+    <string name="signup_error">회원가입에 실패했습니다</string>
+    <string name="login_error">로그인에 실패했습니다</string>
 
 </resources>

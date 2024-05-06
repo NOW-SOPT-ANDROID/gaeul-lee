@@ -1,15 +1,16 @@
-package com.sopt.now.friend
+package com.sopt.now.util.friend
 
-import UserData
+import com.sopt.now.util.user.User
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sopt.now.databinding.ItemFriendBinding
 import com.sopt.now.databinding.ItemUserBinding
+import com.sopt.now.util.user.UserViewHolder
 
 class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var friendList: List<Friend> = emptyList()
-    private var user = UserData("", "", "", "")
+    private var user = User("", "", "")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -47,8 +48,8 @@ class FriendAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setUser(userData: UserData) {
-        user = userData
+    fun setUser(user: User) {
+        this.user = user
         notifyDataSetChanged()
     }
 

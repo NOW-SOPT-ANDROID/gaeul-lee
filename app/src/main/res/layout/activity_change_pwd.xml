@@ -5,72 +5,68 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="30dp"
-    android:paddingBottom="60dp"
-    tools:context=".ui.login.LoginActivity">
+    android:padding="50dp"
+    tools:context=".ui.passwordChange.ChangePwdActivity">
 
     <TextView
-        android:id="@+id/welcome_text"
+        android:id="@+id/tv_previous_pwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/welcome_sopt"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"
+        android:text="@string/previous_pwd_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/id_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/id_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
-
     <EditText
-        android:id="@+id/id_editText"
+        android:id="@+id/et_previous_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/id_hint"
+        android:hint="@string/previous_pwd_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_text" />
+        app:layout_constraintTop_toBottomOf="@id/tv_previous_pwd" />
 
     <TextView
-        android:id="@+id/password_text"
+        android:id="@+id/tv_new_pwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/password_text"
+        android:text="@string/new_pwd_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_editText" />
+        app:layout_constraintTop_toBottomOf="@id/et_previous_pwd" />
 
     <EditText
-        android:id="@+id/password_editText"
+        android:id="@+id/et_new_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
+        android:hint="@string/previous_new_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_text" />
+        app:layout_constraintTop_toBottomOf="@id/tv_new_pwd" />
 
-    <Button
-        android:id="@+id/loginBtn"
+    <TextView
+        android:id="@+id/tv_new_pwd_verification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/new_check_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_new_pwd" />
+
+    <EditText
+        android:id="@+id/et_new_pwd_verification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/login_btn_text"
-        app:layout_constraintBottom_toTopOf="@+id/signUpBtn"
+        android:hint="@string/previous_new_hint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_new_pwd_verification" />
 
     <Button
-        android:id="@+id/signUpBtn"
+        android:id="@+id/btn_change_pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/sign_up_btn_text"
+        android:text="@string/change_pwd_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
