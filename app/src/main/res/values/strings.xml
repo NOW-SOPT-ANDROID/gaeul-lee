@@ -6,8 +6,8 @@
     <string name="pw_hint">비밀번호를 입력해주세요</string>
     <string name="nickname_text">닉네임</string>
     <string name="nickname_hint">닉네임을 입력해주세요</string>
-    <string name="mbti_text">MBTI</string>
-    <string name="mbti_hint">MBTI를 입력해주세요</string>
+    <string name="phone_text">전화번호</string>
+    <string name="phone_hint">전화번호를 입력해주세요</string>
     <string name="login_btn_text">로그인하기</string>
     <string name="signup_btn_text">회원가입 하기</string>
     <string name="signup_text">SIGN UP</string>
@@ -25,4 +25,11 @@
     <string name="bnv_home">홈</string>
     <string name="bnv_search">검색</string>
     <string name="bnv_mypage">마이페이지</string>
+    <string name="change_pwd_btn_text">비밀번호 변경하기</string>
+    <string name="previous_pwd_text">기존 비밀번호</string>
+    <string name="previous_pwd_hint">기존 비밀번호를 입력해주세요</string>
+    <string name="new_pwd_text">새로운 비밀번호</string>
+    <string name="new_pwd_hint">새로운 비밀번호를 입력해주세요</string>
+    <string name="new_pwd_verification_text">비밀번호 확인</string>
+    <string name="new_pwd_verification_hint">새로운 비밀번호를 다시 입력해주세요</string>
 </resources>

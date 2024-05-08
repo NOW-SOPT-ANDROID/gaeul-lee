@@ -4,23 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.sopt.now.compose.R
-import com.sopt.now.compose.User
+import com.sopt.now.compose.data.User
 
 @Composable
 fun UserProfileItem(user: User) {
@@ -31,10 +31,11 @@ fun UserProfileItem(user: User) {
             .background(color = colorResource(id = R.color.pink)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Icon(
-            modifier = Modifier.size(60.dp),
-            imageVector = Icons.Filled.Face,
-            contentDescription = null
+        AsyncImage(
+            modifier = Modifier.padding(20.dp)
+                .clip(RoundedCornerShape(20.dp)),
+            model = "https://avatars.githubusercontent.com/u/91470334?v=4",
+            contentDescription = "User Image",
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
@@ -44,9 +45,11 @@ fun UserProfileItem(user: User) {
         )
         Spacer(modifier = Modifier.width(20.dp))
         Text(
-            text = "제 mbti는 ${user.mbti}입니다!",
+            text = user.phone,
             fontSize = 14.sp,
             fontStyle = FontStyle.Italic,
         )
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
+
