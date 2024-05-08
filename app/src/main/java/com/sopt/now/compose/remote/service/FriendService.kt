@@ -1,6 +1,6 @@
-package com.sopt.now.compose.service
+package com.sopt.now.compose.remote.service
 
-import com.sopt.now.compose.response.ResponseFriendsDto
+import com.sopt.now.compose.remote.response.ResponseFriendsDto
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

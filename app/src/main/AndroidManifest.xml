@@ -16,13 +16,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ChangePwdActivity"
+            android:name=".feature.changePwd.ChangePwdActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name=".feature.signup.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".feature.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".feature.MainActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.NOWSOPTAndroid"></activity>

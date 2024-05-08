@@ -1,4 +1,4 @@
-package com.sopt.now.compose.activity
+package com.sopt.now.compose.feature
 
 import android.os.Bundle
 import android.util.Log
@@ -32,16 +32,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sopt.now.compose.BottomNavigationItem
+import com.sopt.now.compose.model.BottomNavigationItem
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ServicePool
 import com.sopt.now.compose.data.Friend
 import com.sopt.now.compose.data.User
-import com.sopt.now.compose.fragment.MyPageFragment
+import com.sopt.now.compose.feature.mypage.MyPageScreen
 import com.sopt.now.compose.profileItem.FriendProfileItem
 import com.sopt.now.compose.profileItem.UserProfileItem
-import com.sopt.now.compose.response.ResponseFriendsDto
-import com.sopt.now.compose.response.ResponseUserInfoDto
+import com.sopt.now.compose.remote.response.ResponseFriendsDto
+import com.sopt.now.compose.remote.response.ResponseUserInfoDto
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -155,7 +155,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     2 -> {
-                        MyPageFragment(context, userId = userId)
+                        MyPageScreen(context, userId = userId)
                     }
 
                 }

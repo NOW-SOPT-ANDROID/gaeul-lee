@@ -1,4 +1,4 @@
-package com.sopt.now.compose.request
+package com.sopt.now.compose.remote.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

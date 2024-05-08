@@ -1,4 +1,4 @@
-package com.sopt.now.compose.fragment
+package com.sopt.now.compose.feature.mypage
 
 import android.content.Context
 import android.content.Intent
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,20 +22,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import coil.compose.AsyncImage
 import com.sopt.now.compose.R
 import com.sopt.now.compose.ServicePool
-import com.sopt.now.compose.activity.ChangePwdActivity
-import com.sopt.now.compose.activity.LoginActivity
-import com.sopt.now.compose.activity.MainActivity.Companion.LOGIN_INFO
+import com.sopt.now.compose.feature.MainActivity.Companion.LOGIN_INFO
 import com.sopt.now.compose.data.User
-import com.sopt.now.compose.response.ResponseUserInfoDto
+import com.sopt.now.compose.feature.MainActivity
+import com.sopt.now.compose.feature.changePwd.ChangePwdActivity
+import com.sopt.now.compose.feature.login.LoginActivity
+import com.sopt.now.compose.remote.response.ResponseUserInfoDto
+import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,17 +52,16 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @Composable
-fun MyPageFragment(context: Context, userId: Int) {
+fun MyPageScreen(context: Context, userId: Int) {
     var userInfo by remember { mutableStateOf<User?>(null) }
 
+    val mypageViewModel = ViewModelProvider(context as MainActivity).get(MyPageViewModel::class.java)
+
     LaunchedEffect(userId) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                userInfo = getUserInfo(userId)
-            } catch (e: Exception) {
-                Log.e("MyPageFragment", "Error: ${e.message}")
-            }
-        }
+        mypageViewModel.fetchUserInfo(context, userId,
+            onSuccess = { user -> userInfo = user },
+            onFailure = { error -> Log.e("MyPageScreen", "Error: $error") }
+        )
     }
     Column(
         modifier = Modifier
@@ -114,59 +116,22 @@ fun MyPageFragment(context: Context, userId: Int) {
         RoundedCornerButton(
             buttonText = R.string.change_pwd_btn_text,
             onClick = {
-                onClickChangePwdBtn(context, userId)
+                mypageViewModel.onClickChangePwdBtn(context, userId)
             })
         RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
             onClick = {
-                onClickLogoutBtn(context)
+                mypageViewModel.onClickLogoutBtn(context)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
-suspend fun getUserInfo(userId: Int): User {
-    return suspendCoroutine { continuation ->
-        ServicePool.userService.getUserInfo(userId).enqueue(object : Callback<ResponseUserInfoDto> {
-            override fun onResponse(
-                call: Call<ResponseUserInfoDto>,
-                response: Response<ResponseUserInfoDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseUserInfoDto? = response.body()
-                    data?.let {
-                        continuation.resume(
-                            User(
-                                it.data.authenticationId,
-                                it.data.nickname,
-                                it.data.phone
-                            )
-                        )
-                    }
-                } else {
-                    val error = response.errorBody()
-                    continuation.resumeWithException(Exception("Failed to fetch user info"))
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                continuation.resumeWithException(t)
-            }
-        })
+@Preview(showBackground = true)
+@Composable
+fun MyPagePreview() {
+    NOWSOPTAndroidTheme {
+        MyPageScreen(LocalContext.current, 0)
     }
-}
-fun onClickChangePwdBtn(context: Context, userId: Int) {
-    val intent = Intent(context, ChangePwdActivity::class.java)
-    val bundle = Bundle().apply {
-        putInt(LOGIN_INFO, userId)
-    }
-    intent.putExtras(bundle)
-    startActivity(context, intent, null)
-}
-
-fun onClickLogoutBtn(context: Context) {
-    val intent = Intent(context, LoginActivity::class.java)
-    startActivity(context, intent, null)
-
 }

@@ -3,9 +3,9 @@ package com.sopt.now.compose
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sopt.now.compose.BuildConfig.AUTH_BASE_URL
 import com.sopt.now.compose.BuildConfig.FRIEND_BASE_URL
-import com.sopt.now.compose.service.AuthService
-import com.sopt.now.compose.service.FriendService
-import com.sopt.now.compose.service.UserService
+import com.sopt.now.compose.remote.service.AuthService
+import com.sopt.now.compose.remote.service.FriendService
+import com.sopt.now.compose.remote.service.UserService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit

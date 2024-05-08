@@ -1,4 +1,4 @@
-package com.sopt.now.compose.response
+package com.sopt.now.compose.remote.response
 
 import com.sopt.now.compose.data.User
 import kotlinx.serialization.SerialName
