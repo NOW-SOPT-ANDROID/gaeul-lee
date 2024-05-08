@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.compose.R
-import com.sopt.now.compose.feature.MainActivity.Companion.LOGIN_INFO
+import com.sopt.now.compose.feature.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
@@ -56,7 +56,7 @@ class ChangePwdActivity : ComponentActivity() {
         val context = LocalContext.current
 
         val changePwdViewModel =
-            ViewModelProvider(context as ComponentActivity).get(ChangePwdViewModel::class.java)
+            ViewModelProvider(context as ComponentActivity)[ChangePwdViewModel::class.java]
 
         Column(
             modifier = Modifier

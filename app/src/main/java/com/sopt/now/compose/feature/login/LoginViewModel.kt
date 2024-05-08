@@ -5,7 +5,8 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.sopt.now.compose.ServicePool
-import com.sopt.now.compose.feature.MainActivity
+import com.sopt.now.compose.feature.main.MainActivity
+import com.sopt.now.compose.feature.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.compose.feature.signup.SignUpActivity
 import com.sopt.now.compose.remote.request.RequestLoginDto
 import com.sopt.now.compose.remote.response.ResponseLoginDto
@@ -32,7 +33,7 @@ class LoginViewModel : ViewModel() {
                     ).show()
 
                     val intent = Intent(context, MainActivity::class.java)
-                    intent.putExtra(MainActivity.LOGIN_INFO, userId)
+                    intent.putExtra(LOGIN_INFO, userId)
                     context.startActivity(intent)
                 } else {
                     val error = response.message()

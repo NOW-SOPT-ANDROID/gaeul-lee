@@ -1,8 +1,6 @@
 package com.sopt.now.compose.feature.mypage
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,37 +26,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import coil.compose.AsyncImage
 import com.sopt.now.compose.R
-import com.sopt.now.compose.ServicePool
-import com.sopt.now.compose.feature.MainActivity.Companion.LOGIN_INFO
 import com.sopt.now.compose.data.User
-import com.sopt.now.compose.feature.MainActivity
-import com.sopt.now.compose.feature.changePwd.ChangePwdActivity
-import com.sopt.now.compose.feature.login.LoginActivity
-import com.sopt.now.compose.remote.response.ResponseUserInfoDto
+import com.sopt.now.compose.feature.main.MainActivity
+import com.sopt.now.compose.feature.main.MainViewModel
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 @Composable
 fun MyPageScreen(context: Context, userId: Int) {
     var userInfo by remember { mutableStateOf<User?>(null) }
 
-    val mypageViewModel = ViewModelProvider(context as MainActivity).get(MyPageViewModel::class.java)
+    val myPageViewModel =
+        ViewModelProvider(context as MainActivity)[MyPageViewModel::class.java]
+    val mainViewModel = ViewModelProvider(context)[MainViewModel::class.java]
 
     LaunchedEffect(userId) {
-        mypageViewModel.fetchUserInfo(context, userId,
+        mainViewModel.fetchUserInfo(userId,
             onSuccess = { user -> userInfo = user },
             onFailure = { error -> Log.e("MyPageScreen", "Error: $error") }
         )
@@ -116,12 +102,12 @@ fun MyPageScreen(context: Context, userId: Int) {
         RoundedCornerButton(
             buttonText = R.string.change_pwd_btn_text,
             onClick = {
-                mypageViewModel.onClickChangePwdBtn(context, userId)
+                myPageViewModel.onClickChangePwdBtn(context, userId)
             })
         RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
             onClick = {
-                mypageViewModel.onClickLogoutBtn(context)
+                myPageViewModel.onClickLogoutBtn(context)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))

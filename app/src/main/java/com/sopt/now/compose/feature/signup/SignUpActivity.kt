@@ -60,7 +60,7 @@ fun SignUpScreen() {
     val context = LocalContext.current
 
     val signupViewModel =
-        ViewModelProvider(context as ComponentActivity).get(SignUpViewModel::class.java)
+        ViewModelProvider(context as ComponentActivity)[SignUpViewModel::class.java]
 
     Column(
         modifier = Modifier
