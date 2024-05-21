@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sopt.now.ui.base.ServicePool
 import com.sopt.now.remote.response.ResponseUserInfoDto
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,24 +18,16 @@ class MyPageViewModel : ViewModel() {
         get() = _userInfo
 
     private val userService by lazy { ServicePool.userService }
-
     fun fetchUserInfo(userId: Int) {
-        userService.getUserInfo(userId).enqueue(object : Callback<ResponseUserInfoDto> {
-            override fun onResponse(
-                call: Call<ResponseUserInfoDto>,
-                response: Response<ResponseUserInfoDto>
-            ) {
-                if (response.isSuccessful) {
-                    _userInfo.postValue(response.body())
-                } else {
-                    Log.e("MyPageViewModel", response.errorBody().toString())
-                }
+        viewModelScope.launch {
+            runCatching {
+                userService.getUserInfo(userId)
+            }.onSuccess {
+                _userInfo.postValue(it.body())
+            }.onFailure {
+                Log.e("MyPageViewModel", it.message.toString())
             }
-
-            override fun onFailure(call: Call<ResponseUserInfoDto>, t: Throwable) {
-                Log.e("MyPageViewModel", t.message.toString())
-            }
-        })
+        }
     }
 
 }

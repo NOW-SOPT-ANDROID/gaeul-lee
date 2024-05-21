@@ -4,33 +4,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.ui.base.BindingFragment
 import com.sopt.now.ui.login.LoginActivity
-import com.sopt.now.ui.passwordChange.ChangePwdActivity
+import com.sopt.now.ui.changePwd.ChangePwdActivity
 import com.sopt.now.ui.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.ui.main.MainViewModel.Companion.USER_INFO
 
 class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
 
     private var userId: String? = null
-    private lateinit var viewModel: MyPageViewModel
+    private val viewModel by activityViewModels<MyPageViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MyPageViewModel::class.java)
-
         userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
         userId?.let { viewModel.fetchUserInfo(it.toInt()) }
-
-        updateUI()
+        observeUserInfo()
         logoutBtnClick()
         changePasswordBtnClick()
     }
 
-    private fun updateUI() {
+    private fun observeUserInfo() {
         with(binding) {
             viewModel.userInfo.observe(viewLifecycleOwner) {
                 it?.let {

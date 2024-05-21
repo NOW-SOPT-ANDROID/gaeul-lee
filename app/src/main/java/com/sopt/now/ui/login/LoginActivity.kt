@@ -4,40 +4,41 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.sopt.now.R
 import com.sopt.now.databinding.ActivityLoginBinding
+import com.sopt.now.remote.request.RequestLoginDto
 import com.sopt.now.ui.main.MainActivity
-import com.sopt.now.ui.signUp.SignUpActivity
 import com.sopt.now.ui.main.MainViewModel.Companion.LOGIN_INFO
+import com.sopt.now.ui.signUp.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         loginBtnClick()
-        observeLoginResult()
+        observeLoginState()
         signUpBtnClick()
         backPressed()
     }
 
-    private fun observeLoginResult() {
-        viewModel.loginResult.observe(this) { success ->
-            if (success) {
-                Toast.makeText(this, R.string.login_success, Toast.LENGTH_SHORT).show()
+    private fun observeLoginState() {
+        viewModel.loginState.observe(this) {
+            if(it.isSuccess) {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(LOGIN_INFO, viewModel.userId.value)
-                startActivity(intent)
+                viewModel.userId.observe(this) {
+                    intent.putExtra(LOGIN_INFO, it)
+                    startActivity(intent)
+                }
             } else {
-                Toast.makeText(this, R.string.login_error, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -50,8 +51,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginStateChanged() {
         viewModel.login(
-            binding.idEditText.text.toString(),
-            binding.passwordEditText.text.toString(),
+            RequestLoginDto(
+                authenticationId = binding.idEditText.text.toString(),
+                password = binding.passwordEditText.text.toString()
+            )
         )
     }
 
