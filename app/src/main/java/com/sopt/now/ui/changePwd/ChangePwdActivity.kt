@@ -13,18 +13,21 @@ import com.sopt.now.ui.main.MainViewModel.Companion.USER_INFO
 
 class ChangePwdActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePwdBinding
-    private var userId: String? = null
     private val viewModel by viewModels<ChangePwdViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChangePwdBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userId = intent.getStringExtra(USER_INFO)
         changePwdBtnClick()
-        observeChangePwdResult()
+        observeChangePwdState()
     }
 
-    private fun observeChangePwdResult() {
+    private fun getUserId() : Int {
+        val userId = intent.getStringExtra(USER_INFO)
+        return userId?.toInt() ?: 0
+    }
+
+    private fun observeChangePwdState() {
         viewModel.changePwdState.observe(this) {
             if(it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
@@ -37,16 +40,15 @@ class ChangePwdActivity : AppCompatActivity() {
 
     private fun changePwdBtnClick() {
         binding.btnChangePwd.setOnClickListener {
-            userId?.let {
-                viewModel.changePwd(
-                    it.toInt(),
-                    RequestChangePwdDto(
-                        previousPassword = binding.etPreviousPwd.text.toString(),
-                        newPassword = binding.etNewPwd.text.toString(),
-                        newPasswordVerification = binding.etNewPwdVerification.text.toString()
-                    )
+            val userId = getUserId()
+            viewModel.changePwd(
+                userId,
+                RequestChangePwdDto(
+                    previousPassword = binding.etPreviousPwd.text.toString(),
+                    newPassword = binding.etNewPwd.text.toString(),
+                    newPasswordVerification = binding.etNewPwdVerification.text.toString()
                 )
-            }
+            )
         }
     }
 }
