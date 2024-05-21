@@ -47,7 +47,6 @@ class HomeViewModel : ViewModel() {
             runCatching {
                 userService.getUserInfo(userId)
             }.onSuccess {
-                Log.e("HomeViewModel", it.body()?.data.toString())
                 _userInfo.value = it.body()?.data
             }.onFailure {
                 if (it is HttpException) {

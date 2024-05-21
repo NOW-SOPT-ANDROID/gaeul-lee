@@ -1,10 +1,8 @@
 package com.sopt.now.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.ui.base.BindingFragment

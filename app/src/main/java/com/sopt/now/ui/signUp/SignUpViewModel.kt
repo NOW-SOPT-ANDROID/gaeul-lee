@@ -24,10 +24,8 @@ class SignUpViewModel : ViewModel() {
                 _signUpSate.value = SignUpState(true, "회원가입 성공")
             }.onFailure {
                 if (it is HttpException) {
-                    Log.e("SignUpViewModel", "signUp: ${it.message}")
                     _signUpSate.value = SignUpState(false, "서버통신 실패")
                 } else {
-                    Log.e("SignUpViewModel", "signUp: ${it.message}")
                     _signUpSate.value = SignUpState(false, "회원가입 실패")
                 }
 

@@ -1,7 +1,6 @@
 package com.sopt.now.ui.changePwd
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +46,6 @@ class ChangePwdActivity : AppCompatActivity() {
                     newPasswordVerification = binding.etNewPwdVerification.text.toString()
                 )
             )
-            Log.e("ChangePwdActivity", "userId: $userId")
         }
     }
 }
