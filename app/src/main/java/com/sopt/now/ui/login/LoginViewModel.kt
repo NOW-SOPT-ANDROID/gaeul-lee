@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestLoginDto
 import com.sopt.now.ui.base.ServicePool
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class LoginViewModel : ViewModel() {
     private val _loginState = MutableLiveData<LoginState>()
@@ -25,15 +24,16 @@ class LoginViewModel : ViewModel() {
             runCatching {
                 authService.login(request)
             }.onSuccess {
-                val userId = it.headers()["location"]
-                _loginState.value = LoginState(true, "로그인 성공")
-                _userId.value = userId.toString()
-            }.onFailure {
-                if (it is HttpException) {
-                    _loginState.value = LoginState(false, "서버통신 실패")
+                if (it.code() in 200..299) {
+                    _loginState.value = LoginState(true, "로그인 성공")
+                    val userId = it.headers()["location"]
+                    _userId.value = userId.toString()
                 } else {
-                    _loginState.value = LoginState(false, "로그인 실패")
+                    _loginState.value =
+                        it.errorBody()?.string()?.split("\"")?.let { LoginState(false, it[5]) }
                 }
+            }.onFailure {
+                _loginState.value = LoginState(false, it.message.toString())
             }
         }
     }

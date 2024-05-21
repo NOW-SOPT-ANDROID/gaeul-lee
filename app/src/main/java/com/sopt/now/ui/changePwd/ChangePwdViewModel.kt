@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestChangePwdDto
 import com.sopt.now.ui.base.ServicePool
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class ChangePwdViewModel : ViewModel() {
     private val _changePwdState = MutableLiveData<ChangePwdState>()
@@ -21,13 +20,14 @@ class ChangePwdViewModel : ViewModel() {
             runCatching {
                 userService.changeUserPwd(userId, request)
             }.onSuccess {
-                _changePwdState.value = ChangePwdState(true, "비밀번호 변경 성공")
-            }.onFailure {
-                if (it is HttpException) {
-                    _changePwdState.value = ChangePwdState(false, "서버통신 실패")
+                if (it.code() in 200..299) {
+                    _changePwdState.value = ChangePwdState(true, "비밀번호 변경 성공")
                 } else {
-                    _changePwdState.value = ChangePwdState(false, "비밀번호 변경 실패")
+                    _changePwdState.value =
+                        it.errorBody()?.string()?.split("\"")?.let { ChangePwdState(false, it[5]) }
                 }
+            }.onFailure {
+                _changePwdState.value = ChangePwdState(false, it.message.toString())
             }
         }
     }
