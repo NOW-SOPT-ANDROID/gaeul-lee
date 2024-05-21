@@ -1,7 +1,6 @@
 package com.sopt.now.compose.feature.mypage
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,29 +24,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.sopt.now.compose.R
-import com.sopt.now.compose.data.User
-import com.sopt.now.compose.feature.main.MainActivity
 import com.sopt.now.compose.feature.main.MainViewModel
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
 
 @Composable
 fun MyPageScreen(context: Context, userId: Int) {
-    var userInfo by remember { mutableStateOf<User?>(null) }
-
-    val myPageViewModel =
-        ViewModelProvider(context as MainActivity)[MyPageViewModel::class.java]
-    val mainViewModel = ViewModelProvider(context)[MainViewModel::class.java]
-
-    LaunchedEffect(userId) {
-        mainViewModel.fetchUserInfo(userId,
-            onSuccess = { user -> userInfo = user },
-            onFailure = { error -> Log.e("MyPageScreen", "Error: $error") }
-        )
-    }
+    val myPageViewModel: MyPageViewModel = viewModel()
+    val mainViewModel: MainViewModel = viewModel()
+    val userInfo = mainViewModel.userInfo.observeAsState().value
+    mainViewModel.fetchUserInfo(userId)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,7 +49,8 @@ fun MyPageScreen(context: Context, userId: Int) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AsyncImage(
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier
+                    .size(200.dp)
                     .clip(RoundedCornerShape(20.dp)),
                 model = "https://avatars.githubusercontent.com/u/91470334?v=4",
                 contentDescription = "User Image",
@@ -107,12 +93,12 @@ fun MyPageScreen(context: Context, userId: Int) {
         RoundedCornerButton(
             buttonText = R.string.change_pwd_btn_text,
             onClick = {
-                myPageViewModel.onClickChangePwdBtn(context, userId)
+                myPageViewModel.changePwdBtnClick(context, userId)
             })
         RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
             onClick = {
-                myPageViewModel.onClickLogoutBtn(context)
+                myPageViewModel.logoutBtnClick(context)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))

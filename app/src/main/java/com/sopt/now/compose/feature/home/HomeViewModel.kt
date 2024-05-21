@@ -1,53 +1,38 @@
 package com.sopt.now.compose.feature.home
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.compose.ServicePool
 import com.sopt.now.compose.data.Friend
-import com.sopt.now.compose.remote.response.ResponseFriendsDto
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.HttpException
 
 class HomeViewModel : ViewModel() {
 
-    fun fetchFriendsInfo(onSuccess: (MutableList<Friend>) -> Unit, onFailure: (String) -> Unit) {
-        var friendList = mutableListOf<Friend>()
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                ServicePool.friendService.getFriends(2)
-                    .enqueue(object : Callback<ResponseFriendsDto> {
+    private val _friendList = MutableLiveData<List<Friend>>()
+    val friendList: LiveData<List<Friend>>
+        get() = _friendList
+    private val friendService by lazy { ServicePool.friendService }
 
-                        override fun onResponse(
-                            call: Call<ResponseFriendsDto>,
-                            response: Response<ResponseFriendsDto>
-                        ) {
-                            if (response.isSuccessful) {
-                                val friends = response.body()?.data
-                                friends?.forEach { friend ->
-                                    friendList.add(
-                                        Friend(
-                                            friend.avatar,
-                                            friend.firstName,
-                                            friend.email
-                                        )
-                                    )
-                                }
-                                onSuccess(friendList)
-                            } else {
-                                onFailure("Failed to fetch friends")
-                            }
-                        }
+    fun fetchFriends(page: Int) {
+        viewModelScope.launch {
+            runCatching {
+                friendService.getFriends(page)
+            }.onSuccess {
+                val friends = it.body()?.data ?: emptyList()
+                _friendList.postValue(friends.map { Friend(it.avatar, it.firstName, it.email) })
+            }.onFailure {
+                if (it is HttpException) {
+                    Log.e("HomeViewModel", "서버통신 오류")
+                } else {
+                    Log.e("HomeViewModel", it.message.toString())
+                }
 
-                        override fun onFailure(call: Call<ResponseFriendsDto>, t: Throwable) {
-                            onFailure(t.message ?: "Failed to fetch friends")
-                        }
-                    })
-            } catch (e: Exception) {
-                onFailure("Failed to fetch friend info: ${e.message}")
             }
+
         }
     }
 }
