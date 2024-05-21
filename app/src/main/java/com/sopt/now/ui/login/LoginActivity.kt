@@ -2,6 +2,7 @@ package com.sopt.now.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -30,11 +31,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeLoginState() {
         viewModel.loginState.observe(this) {
-            if(it.isSuccess) {
+            if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 viewModel.userId.observe(this) {
-                    intent.putExtra(LOGIN_INFO, it)
+                    intent.putExtra(LOGIN_INFO, viewModel.userId.value)
                     startActivity(intent)
                 }
             } else {

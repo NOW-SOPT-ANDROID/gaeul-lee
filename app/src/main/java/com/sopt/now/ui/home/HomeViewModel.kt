@@ -1,12 +1,10 @@
 package com.sopt.now.ui.home
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.remote.response.ResponseUserInfoDto
 import com.sopt.now.ui.base.ServicePool
 import com.sopt.now.util.friend.Friend
 import com.sopt.now.util.user.User

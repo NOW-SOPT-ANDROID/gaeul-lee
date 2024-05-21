@@ -20,7 +20,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun observeSignUpState() {
         viewModel.signUpState.observe(this) {
-            if(it.isSuccess) {
+            if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 finish()
             } else {

@@ -8,26 +8,28 @@ import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
 import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.ui.base.BindingFragment
-import com.sopt.now.ui.login.LoginActivity
 import com.sopt.now.ui.changePwd.ChangePwdActivity
+import com.sopt.now.ui.login.LoginActivity
 import com.sopt.now.ui.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.ui.main.MainViewModel.Companion.USER_INFO
 
 class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
-
-    private var userId: String? = null
     private val viewModel by activityViewModels<MyPageViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
-        userId?.let { viewModel.fetchUserInfo(it.toInt()) }
         observeUserInfo()
         logoutBtnClick()
         changePasswordBtnClick()
     }
 
+    private fun getUserId(): String? {
+        return requireActivity().intent.getStringExtra(LOGIN_INFO)
+    }
+
     private fun observeUserInfo() {
+        val userId = getUserId()
+        userId?.let { viewModel.fetchUserInfo(it.toInt()) }
         with(binding) {
             viewModel.userInfo.observe(viewLifecycleOwner) {
                 it?.let {
@@ -40,6 +42,7 @@ class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBi
 
     private fun changePasswordBtnClick() {
         binding.btnEditPwd.setOnClickListener {
+            val userId = getUserId()
             val intent = Intent(requireContext(), ChangePwdActivity::class.java)
             intent.putExtra(USER_INFO, userId)
             activity?.startActivity(intent)

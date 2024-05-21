@@ -1,6 +1,5 @@
 package com.sopt.now.ui.changePwd
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -8,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.databinding.ActivityChangePwdBinding
 import com.sopt.now.remote.request.RequestChangePwdDto
-import com.sopt.now.ui.main.MainActivity
 import com.sopt.now.ui.main.MainViewModel.Companion.USER_INFO
 
 class ChangePwdActivity : AppCompatActivity() {
@@ -22,14 +20,14 @@ class ChangePwdActivity : AppCompatActivity() {
         observeChangePwdState()
     }
 
-    private fun getUserId() : Int {
+    private fun getUserId(): Int {
         val userId = intent.getStringExtra(USER_INFO)
         return userId?.toInt() ?: 0
     }
 
     private fun observeChangePwdState() {
         viewModel.changePwdState.observe(this) {
-            if(it.isSuccess) {
+            if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 finish()
             } else {
@@ -49,6 +47,7 @@ class ChangePwdActivity : AppCompatActivity() {
                     newPasswordVerification = binding.etNewPwdVerification.text.toString()
                 )
             )
+            Log.e("ChangePwdActivity", "userId: $userId")
         }
     }
 }

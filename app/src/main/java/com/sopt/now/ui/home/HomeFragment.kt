@@ -19,9 +19,6 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFriendAdapter()
-        viewModel.fetchFriends(PAGE)
-        val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
-        userId?.let { viewModel.fetchUserInfo(it.toInt()) }
         observeFriendList()
         observeUserInfo()
     }
@@ -35,12 +32,15 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
     }
 
     private fun observeUserInfo() {
+        val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
+        userId?.let { viewModel.fetchUserInfo(it.toInt()) }
         viewModel.userInfo.observe(viewLifecycleOwner) {
             friendAdapter.setUser(User(it.authenticationId, it.nickname, it.phone))
         }
     }
 
     private fun observeFriendList() {
+        viewModel.fetchFriends(PAGE)
         viewModel.friendList.observe(viewLifecycleOwner) {
             friendAdapter.setFriendList(it)
         }

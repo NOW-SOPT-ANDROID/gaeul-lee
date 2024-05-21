@@ -5,12 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.ui.base.ServicePool
 import com.sopt.now.remote.response.ResponseUserInfoDto
+import com.sopt.now.ui.base.ServicePool
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MyPageViewModel : ViewModel() {
     private val _userInfo = MutableLiveData<ResponseUserInfoDto>()
