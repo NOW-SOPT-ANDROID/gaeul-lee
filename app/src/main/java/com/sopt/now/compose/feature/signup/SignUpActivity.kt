@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -62,10 +61,12 @@ fun SignUpScreen() {
     val context = LocalContext.current
     val viewModel: SignUpViewModel = viewModel()
     val signUpState = viewModel.signUpState.observeAsState()
-    LaunchedEffect(signUpState.value?.isSuccess) {
-        if (signUpState.value?.isSuccess == true) {
-            Toast.makeText(context, signUpState.value!!.message, Toast.LENGTH_SHORT).show()
+    signUpState.value?.let {
+        if (it.isSuccess) {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             (context as? ComponentActivity)?.finish()
+        } else {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
     }
 

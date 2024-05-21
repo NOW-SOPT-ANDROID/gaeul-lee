@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -66,12 +65,14 @@ fun LoginScreen() {
     val viewModel: LoginViewModel = viewModel()
     val loginState = viewModel.loginState.observeAsState()
     val userId = viewModel.userId.observeAsState()
-    LaunchedEffect(loginState.value?.isSuccess, userId.value) {
-        if (loginState.value?.isSuccess == true) {
-            Toast.makeText(context, loginState.value?.message, Toast.LENGTH_SHORT).show()
+    loginState.value?.let {
+        if (it.isSuccess) {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra(LOGIN_INFO, userId.value)
             startActivity(context, intent, null)
+        } else {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -57,10 +56,12 @@ fun ChangePwdScreen(userId: Int) {
     val context = LocalContext.current
     val changePwdViewModel: ChangePwdViewModel = viewModel()
     val changePwdState = changePwdViewModel.changePwdState.observeAsState()
-    LaunchedEffect(changePwdState.value?.isSuccess) {
-        if (changePwdState.value?.isSuccess == true) {
-            Toast.makeText(context, changePwdState.value!!.message, Toast.LENGTH_SHORT).show()
+    changePwdState.value?.let {
+        if (it.isSuccess) {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             (context as? ComponentActivity)?.finish()
+        } else {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
     }
 
