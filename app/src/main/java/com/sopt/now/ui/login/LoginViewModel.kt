@@ -13,19 +13,14 @@ class LoginViewModel : ViewModel() {
     val loginState: LiveData<LoginState>
         get() = _loginState
 
-    private val _userId = MutableLiveData<String>()
-    val userId: LiveData<String>
-        get() = _userId
-
     fun login(request: RequestLoginDto) {
         viewModelScope.launch {
             runCatching {
                 authService.login(request)
             }.onSuccess {
                 if (it.code() in 200..299) {
-                    _loginState.value = LoginState(true, "로그인 성공")
                     val userId = it.headers()["location"]
-                    _userId.value = userId.toString()
+                    _loginState.value = LoginState(true, "로그인 성공", userId)
                 } else {
                     _loginState.value =
                         it.errorBody()?.string()?.split("\"")?.let { LoginState(false, it[5]) }

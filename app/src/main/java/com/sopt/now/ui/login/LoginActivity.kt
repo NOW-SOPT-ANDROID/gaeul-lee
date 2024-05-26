@@ -33,10 +33,8 @@ class LoginActivity : AppCompatActivity() {
             if (it.isSuccess) {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
-                viewModel.userId.observe(this) {
-                    intent.putExtra(LOGIN_INFO, viewModel.userId.value)
-                    startActivity(intent)
-                }
+                intent.putExtra(LOGIN_INFO, it.userId)
+                startActivity(intent)
             } else {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
