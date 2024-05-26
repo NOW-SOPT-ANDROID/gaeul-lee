@@ -19,11 +19,6 @@ class ChangePwdActivity : AppCompatActivity() {
         observeChangePwdState()
     }
 
-    private fun getUserId(): Int {
-        val userId = intent.getStringExtra(USER_INFO)
-        return userId?.toInt() ?: 0
-    }
-
     private fun observeChangePwdState() {
         viewModel.changePwdState.observe(this) {
             if (it.isSuccess) {
@@ -37,7 +32,7 @@ class ChangePwdActivity : AppCompatActivity() {
 
     private fun changePwdBtnClick() {
         binding.btnChangePwd.setOnClickListener {
-            val userId = getUserId()
+            val userId = intent.getStringExtra(USER_INFO)?.toInt() ?: 0
             viewModel.changePwd(
                 userId,
                 RequestChangePwdDto(
