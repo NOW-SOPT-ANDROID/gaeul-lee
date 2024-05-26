@@ -5,15 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestChangePwdDto
-import com.sopt.now.ui.base.ServicePool
+import com.sopt.now.ui.base.ServicePool.userService
 import kotlinx.coroutines.launch
 
 class ChangePwdViewModel : ViewModel() {
     private val _changePwdState = MutableLiveData<ChangePwdState>()
     val changePwdState: LiveData<ChangePwdState>
         get() = _changePwdState
-
-    private val userService by lazy { ServicePool.userService }
 
     fun changePwd(userId: Int, request: RequestChangePwdDto) {
         viewModelScope.launch {

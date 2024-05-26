@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestSignUpDto
 import com.sopt.now.ui.base.ServicePool
+import com.sopt.now.ui.base.ServicePool.authService
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
@@ -13,7 +14,6 @@ class SignUpViewModel : ViewModel() {
     val signUpState: LiveData<SignUpState>
         get() = _signUpSate
 
-    private val authService by lazy { ServicePool.authService }
     fun signUp(request: RequestSignUpDto) {
         viewModelScope.launch {
             runCatching {

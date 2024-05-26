@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.ui.base.ServicePool
+import com.sopt.now.ui.base.ServicePool.friendService
+import com.sopt.now.ui.base.ServicePool.userService
 import com.sopt.now.util.friend.Friend
 import com.sopt.now.util.user.User
 import kotlinx.coroutines.launch
@@ -19,9 +20,6 @@ class HomeViewModel : ViewModel() {
     private val _userInfo = MutableLiveData<User>()
     val userInfo: LiveData<User>
         get() = _userInfo
-
-    private val userService by lazy { ServicePool.userService }
-    private val friendService by lazy { ServicePool.friendService }
 
     fun fetchFriends(page: Int) {
         viewModelScope.launch {

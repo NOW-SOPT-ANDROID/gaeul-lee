@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestLoginDto
-import com.sopt.now.ui.base.ServicePool
+import com.sopt.now.ui.base.ServicePool.authService
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
@@ -16,8 +16,6 @@ class LoginViewModel : ViewModel() {
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String>
         get() = _userId
-
-    private val authService by lazy { ServicePool.authService }
 
     fun login(request: RequestLoginDto) {
         viewModelScope.launch {
