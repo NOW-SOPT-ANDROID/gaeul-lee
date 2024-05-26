@@ -1,9 +1,9 @@
 package com.sopt.now.ui.base
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.sopt.now.BuildConfig
-import com.sopt.now.BuildConfig.AUTH_BASE_URL
-import com.sopt.now.BuildConfig.FRIEND_BASE_URL
+import com.sopt.now.compose.BuildConfig
+import com.sopt.now.compose.BuildConfig.AUTH_BASE_URL
+import com.sopt.now.compose.BuildConfig.FRIEND_BASE_URL
 import com.sopt.now.remote.service.AuthService
 import com.sopt.now.remote.service.FriendService
 import com.sopt.now.remote.service.UserService

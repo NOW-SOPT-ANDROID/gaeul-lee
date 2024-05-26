@@ -17,7 +17,7 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFriendAdapter()
-        observeFriendList()
+        observeFriends()
         observeUserInfo()
     }
 
@@ -37,9 +37,9 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
         }
     }
 
-    private fun observeFriendList() {
+    private fun observeFriends() {
         viewModel.fetchFriends(PAGE)
-        viewModel.friendList.observe(viewLifecycleOwner) {
+        viewModel.friends.observe(viewLifecycleOwner) {
             friendAdapter.setFriendList(it)
         }
     }

@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 class HomeViewModel : ViewModel() {
-    private val _friendList = MutableLiveData<List<Friend>>()
-    val friendList: LiveData<List<Friend>>
-        get() = _friendList
+    private val _friends = MutableLiveData<List<Friend>>()
+    val friends: LiveData<List<Friend>>
+        get() = _friends
 
     private val _userInfo = MutableLiveData<User>()
     val userInfo: LiveData<User>
@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
                 friendService.getFriends(page)
             }.onSuccess {
                 val friends = it.body()?.data ?: emptyList()
-                _friendList.postValue(friends.map { Friend(it.avatar, it.firstName, it.email) })
+                _friends.postValue(friends.map { Friend(it.avatar, it.firstName, it.email) })
             }.onFailure {
                 if (it is HttpException) {
                     Log.e("HomeViewModel", "서버통신 오류")
