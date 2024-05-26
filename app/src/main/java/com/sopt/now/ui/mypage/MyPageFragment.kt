@@ -18,18 +18,18 @@ class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val userId = requireActivity().intent.getStringExtra(LOGIN_INFO)
+        fetchUserInfo(userId)
         observeUserInfo()
         logoutBtnClick()
-        changePasswordBtnClick()
+        changePasswordBtnClick(userId)
     }
 
-    private fun getUserId(): String? {
-        return requireActivity().intent.getStringExtra(LOGIN_INFO)
+    private fun fetchUserInfo(userId: String?) {
+        viewModel.fetchUserInfo(userId?.toInt() ?: 0)
     }
 
     private fun observeUserInfo() {
-        val userId = getUserId()
-        userId?.let { viewModel.fetchUserInfo(it.toInt()) }
         with(binding) {
             viewModel.userInfo.observe(viewLifecycleOwner) {
                 it?.let {
@@ -40,9 +40,8 @@ class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBi
         }
     }
 
-    private fun changePasswordBtnClick() {
+    private fun changePasswordBtnClick(userId: String?) {
         binding.btnEditPwd.setOnClickListener {
-            val userId = getUserId()
             val intent = Intent(requireContext(), ChangePwdActivity::class.java)
             intent.putExtra(USER_INFO, userId)
             activity?.startActivity(intent)
