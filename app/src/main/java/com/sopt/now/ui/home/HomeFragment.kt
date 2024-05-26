@@ -11,7 +11,7 @@ import com.sopt.now.util.friend.FriendAdapter
 import com.sopt.now.util.user.User
 
 class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
-    private lateinit var friendAdapter: FriendAdapter
+    private val friendAdapter by lazy { FriendAdapter() }
     private val viewModel by activityViewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -22,7 +22,6 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
     }
 
     private fun initFriendAdapter() {
-        friendAdapter = FriendAdapter()
         binding.rvFriends.run {
             adapter = friendAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
