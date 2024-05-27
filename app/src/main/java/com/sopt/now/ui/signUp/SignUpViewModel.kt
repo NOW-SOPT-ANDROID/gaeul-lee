@@ -5,14 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestSignUpDto
-import com.sopt.now.ui.base.ServicePool
 import com.sopt.now.ui.base.ServicePool.authService
 import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    private val _signUpSate = MutableLiveData<SignUpState>()
+    private val _signUpState = MutableLiveData<SignUpState>()
     val signUpState: LiveData<SignUpState>
-        get() = _signUpSate
+        get() = _signUpState
 
     fun signUp(request: RequestSignUpDto) {
         viewModelScope.launch {
@@ -20,13 +19,13 @@ class SignUpViewModel : ViewModel() {
                 authService.signUp(request)
             }.onSuccess {
                 if (it.code() in 200..299) {
-                    _signUpSate.value = SignUpState(true, "회원가입 성공")
+                    _signUpState.value = SignUpState(true, "회원가입 성공")
                 } else {
-                    _signUpSate.value =
+                    _signUpState.value =
                         it.errorBody()?.string()?.split("\"")?.let { SignUpState(false, it[5]) }
                 }
             }.onFailure {
-                _signUpSate.value = SignUpState(false, "회원가입 실패")
+                _signUpState.value = SignUpState(false, "회원가입 실패")
             }
         }
     }
