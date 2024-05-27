@@ -1,5 +1,6 @@
 package com.sopt.now.ui.mypage
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import com.sopt.now.databinding.FragmentMyPageBinding
 import com.sopt.now.ui.base.BindingFragment
 import com.sopt.now.ui.changePwd.ChangePwdActivity
 import com.sopt.now.ui.login.LoginActivity
+import com.sopt.now.ui.login.LoginActivity.Companion.PREF_KEY
 import com.sopt.now.ui.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.ui.main.MainViewModel.Companion.USER_INFO
 
@@ -65,6 +67,11 @@ class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBi
     }
 
     private fun navigateToLoginActivity() {
+        val sharedPreferences = requireActivity().getSharedPreferences(PREF_KEY, MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            clear()
+            apply()
+        }
         val intent = Intent(requireContext(), LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         activity?.startActivity(intent)
