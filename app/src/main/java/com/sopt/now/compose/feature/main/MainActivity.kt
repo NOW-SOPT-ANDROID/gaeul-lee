@@ -30,8 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.sopt.now.compose.feature.base.BottomNavigationItem
 import com.sopt.now.compose.R
+import com.sopt.now.compose.feature.base.BottomNavigationItem
 import com.sopt.now.compose.feature.home.HomeScreen
 import com.sopt.now.compose.feature.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.compose.feature.mypage.MyPageScreen
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MainScreen(userId: Int){
+    fun MainScreen(userId: Int) {
         val context = LocalContext.current
         var selectedItem by remember { mutableIntStateOf(0) }
         val items = listOf(

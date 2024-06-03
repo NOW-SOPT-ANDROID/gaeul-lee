@@ -1,8 +1,9 @@
 package com.sopt.now.compose.feature.login
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,8 +28,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sopt.now.compose.R
+import com.sopt.now.compose.feature.main.MainActivity
+import com.sopt.now.compose.feature.main.MainViewModel.Companion.LOGIN_INFO
+import com.sopt.now.compose.remote.request.RequestLoginDto
 import com.sopt.now.compose.ui.theme.LabeledTextField
 import com.sopt.now.compose.ui.theme.NOWSOPTAndroidTheme
 import com.sopt.now.compose.ui.theme.RoundedCornerButton
@@ -56,8 +62,19 @@ fun LoginScreen() {
 
     val context = LocalContext.current
 
-    val loginViewModel =
-        ViewModelProvider(context as ComponentActivity)[LoginViewModel::class.java]
+    val viewModel: LoginViewModel = viewModel()
+    val loginState = viewModel.loginState.observeAsState()
+    val userId = viewModel.userId.observeAsState()
+    loginState.value?.let {
+        if (it.isSuccess) {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra(LOGIN_INFO, userId.value)
+            startActivity(context, intent, null)
+        } else {
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -92,13 +109,18 @@ fun LoginScreen() {
         RoundedCornerButton(
             buttonText = R.string.login_btn_text,
             onClick = {
-                loginViewModel.login(context, id, pwd)
+                viewModel.login(
+                    RequestLoginDto(
+                        authenticationId = id,
+                        password = pwd
+                    )
+                )
             }
         )
         RoundedCornerButton(
             buttonText = R.string.signup_btn_text,
             onClick = {
-                loginViewModel.navigateToSignUp(context)
+                viewModel.navigateToSignUp(context)
             }
         )
         Spacer(modifier = Modifier.height(30.dp))
