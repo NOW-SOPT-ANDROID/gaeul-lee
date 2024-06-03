@@ -22,6 +22,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPreferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE)
+        val userId = sharedPreferences.getString(PREF_KEY, null)
+        if (userId != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(LOGIN_INFO, userId)
+            startActivity(intent)
+            finish()
+        }
+
         loginBtnClick()
         observeLoginState()
         signUpBtnClick()
@@ -31,10 +41,16 @@ class LoginActivity : AppCompatActivity() {
     private fun observeLoginState() {
         viewModel.loginState.observe(this) {
             if (it.isSuccess) {
+                val sharedPreferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE)
+                with(sharedPreferences.edit()) {
+                    putString(PREF_KEY, it.userId)
+                    apply()
+                }
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra(LOGIN_INFO, it.userId)
                 startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
@@ -78,6 +94,10 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    companion object {
+        const val PREF_KEY = "LoginPrefs"
     }
 
 }
