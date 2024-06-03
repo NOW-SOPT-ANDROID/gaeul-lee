@@ -2,37 +2,31 @@ package com.sopt.now.ui.signUp
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.sopt.now.R
 import com.sopt.now.databinding.ActivitySignUpBinding
+import com.sopt.now.remote.request.RequestSignUpDto
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-
-    private lateinit var viewModel: SignUpViewModel
+    private val viewModel by viewModels<SignUpViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         signUpBtnClick()
-        observeSignUpResult()
+        observeSignUpState()
     }
 
-    private fun observeSignUpResult() {
-        viewModel.signUpResult.observe(this, Observer { success ->
-            if (success) {
-                Toast.makeText(this@SignUpActivity, R.string.signup_success, Toast.LENGTH_SHORT)
-                    .show()
+    private fun observeSignUpState() {
+        viewModel.signUpState.observe(this) {
+            if (it.isSuccess) {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                 finish()
             } else {
-                Toast.makeText(this@SignUpActivity, R.string.signup_error, Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     private fun signUpBtnClick() {
@@ -43,10 +37,12 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun signUpStateChanged() {
         viewModel.signUp(
-            binding.idEditText.text.toString(),
-            binding.passwordEditText.text.toString(),
-            binding.nicknameEditText.text.toString(),
-            binding.phoneEditText.text.toString()
+            RequestSignUpDto(
+                authenticationId = binding.idEditText.text.toString(),
+                password = binding.passwordEditText.text.toString(),
+                nickname = binding.nicknameEditText.text.toString(),
+                phone = binding.phoneEditText.text.toString()
+            )
         )
     }
 }

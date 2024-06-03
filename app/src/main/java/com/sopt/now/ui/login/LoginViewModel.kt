@@ -1,52 +1,33 @@
 package com.sopt.now.ui.login
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.ui.base.ServicePool
+import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestLoginDto
-import com.sopt.now.remote.response.ResponseLoginDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.sopt.now.ui.base.ServicePool.authService
+import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
-    private val _loginResult = MutableLiveData<Boolean>()
-    val loginResult: MutableLiveData<Boolean>
-        get() = _loginResult
+    private val _loginState = MutableLiveData<LoginState>()
+    val loginState: LiveData<LoginState>
+        get() = _loginState
 
-    private val _userId = MutableLiveData<String?>()
-    val userId: MutableLiveData<String?>
-        get() = _userId
-
-    private val authService by lazy { ServicePool.authService }
-
-    fun login(authenticationId: String, password: String) {
-        val loginRequest = RequestLoginDto(
-            authenticationId = authenticationId,
-            password = password
-        )
-        authService.login(loginRequest).enqueue(object :
-            Callback<ResponseLoginDto> {
-            override fun onResponse(
-                call: Call<ResponseLoginDto>,
-                response: Response<ResponseLoginDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseLoginDto? = response.body()
-                    val userId = response.headers()["location"]
-                    Log.d("LoginViewModel", "data: $data, userId: $userId")
-                    _loginResult.postValue(true)
-                    _userId.value = userId
+    fun login(request: RequestLoginDto) {
+        viewModelScope.launch {
+            runCatching {
+                authService.login(request)
+            }.onSuccess {
+                if (it.code() in 200..299) {
+                    val userId = it.headers()["location"]
+                    _loginState.value = LoginState(true, "로그인 성공", userId)
                 } else {
-                    _loginResult.postValue(false)
+                    _loginState.value =
+                        it.errorBody()?.string()?.split("\"")?.let { LoginState(false, it[5]) }
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseLoginDto>, t: Throwable) {
-                _loginResult.postValue(false)
+            }.onFailure {
+                _loginState.value = LoginState(false, it.message.toString())
             }
         }
-        )
     }
 }

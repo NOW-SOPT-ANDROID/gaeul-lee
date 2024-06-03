@@ -1,50 +1,33 @@
 package com.sopt.now.ui.signUp
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sopt.now.ui.base.ServicePool
+import androidx.lifecycle.viewModelScope
 import com.sopt.now.remote.request.RequestSignUpDto
-import com.sopt.now.remote.response.ResponseSignUpDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.sopt.now.ui.base.ServicePool.authService
+import kotlinx.coroutines.launch
 
 class SignUpViewModel : ViewModel() {
-    private val _signUpResult = MutableLiveData<Boolean>()
-    val signUpResult: MutableLiveData<Boolean>
-        get() = _signUpResult
+    private val _signUpState = MutableLiveData<SignUpState>()
+    val signUpState: LiveData<SignUpState>
+        get() = _signUpState
 
-    private val authService by lazy { ServicePool.authService }
-
-    fun signUp(authenticationId: String, password: String, nickname: String, phone: String) {
-        val signUpRequest = RequestSignUpDto(
-            authenticationId = authenticationId,
-            password = password,
-            nickname = nickname,
-            phone = phone
-        )
-        authService.signUp(signUpRequest).enqueue(object :
-            Callback<ResponseSignUpDto> {
-            override fun onResponse(
-                call: Call<ResponseSignUpDto>,
-                response: Response<ResponseSignUpDto>,
-            ) {
-                if (response.isSuccessful) {
-                    val data: ResponseSignUpDto? = response.body()
-                    val userId = response.headers()["location"]
-                    Log.d("SignUpViewModel", "data: $data, userId: $userId")
-                    _signUpResult.postValue(true)
+    fun signUp(request: RequestSignUpDto) {
+        viewModelScope.launch {
+            runCatching {
+                authService.signUp(request)
+            }.onSuccess {
+                if (it.code() in 200..299) {
+                    _signUpState.value = SignUpState(true, "회원가입 성공")
                 } else {
-                    _signUpResult.postValue(false)
+                    _signUpState.value =
+                        it.errorBody()?.string()?.split("\"")?.let { SignUpState(false, it[5]) }
                 }
-            }
-
-            override fun onFailure(call: Call<ResponseSignUpDto>, t: Throwable) {
-                _signUpResult.postValue(false)
+            }.onFailure {
+                _signUpState.value = SignUpState(false, "회원가입 실패")
             }
         }
-        )
     }
 
 }
