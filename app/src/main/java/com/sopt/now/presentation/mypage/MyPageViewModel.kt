@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.response.ResponseUserInfoDto
 import com.sopt.now.data.remote.ServicePool.userService
+import com.sopt.now.domain.FollowerRepository
 import kotlinx.coroutines.launch
 
-class MyPageViewModel : ViewModel() {
+class MyPageViewModel(
+    private val followerRepository: FollowerRepository
+) : ViewModel() {
     private val _userInfo = MutableLiveData<ResponseUserInfoDto>()
     val userInfo: LiveData<ResponseUserInfoDto>
         get() = _userInfo
@@ -17,7 +20,7 @@ class MyPageViewModel : ViewModel() {
     fun fetchUserInfo(userId: Int) {
         viewModelScope.launch {
             runCatching {
-                userService.getUserInfo(userId)
+                followerRepository.getUserInfo(userId)
             }.onSuccess {
                 _userInfo.postValue(it.body())
             }.onFailure {

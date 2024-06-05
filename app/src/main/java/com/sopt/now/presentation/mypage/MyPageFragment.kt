@@ -7,16 +7,28 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import com.sopt.now.R
+import com.sopt.now.data.remote.ServicePool.friendService
+import com.sopt.now.data.remote.ServicePool.userService
+import com.sopt.now.data.repositoryImpl.FollowerRepositoryImpl
 import com.sopt.now.databinding.FragmentMyPageBinding
-import com.sopt.now.util.BindingFragment
+import com.sopt.now.domain.FollowerRepository
 import com.sopt.now.presentation.changePwd.ChangePwdActivity
 import com.sopt.now.presentation.login.LoginActivity
 import com.sopt.now.presentation.login.LoginActivity.Companion.PREF_KEY
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.presentation.main.MainViewModel.Companion.USER_INFO
+import com.sopt.now.util.BindingFragment
 
 class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
-    private val viewModel by activityViewModels<MyPageViewModel>()
+    private val followerRepository: FollowerRepository by lazy {
+        FollowerRepositoryImpl(
+            userService,
+            friendService
+        )
+    }
+    private val viewModel: MyPageViewModel by activityViewModels {
+        MyPageViewModelFactory(followerRepository)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

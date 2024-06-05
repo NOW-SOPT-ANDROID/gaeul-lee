@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.ServicePool.friendService
 import com.sopt.now.data.remote.ServicePool.userService
+import com.sopt.now.domain.FollowerRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val followerRepository: FollowerRepository
+) : ViewModel() {
     private val _friends = MutableLiveData<List<Friend>>()
     val friends: LiveData<List<Friend>>
         get() = _friends
@@ -22,7 +25,7 @@ class HomeViewModel : ViewModel() {
     fun fetchFriends(page: Int) {
         viewModelScope.launch {
             runCatching {
-                friendService.getFriends(page)
+                followerRepository.getFriends(page)
             }.onSuccess {
                 val friends = it.body()?.data ?: emptyList()
                 _friends.postValue(friends.map { Friend(it.avatar, it.firstName, it.email) })
@@ -41,7 +44,7 @@ class HomeViewModel : ViewModel() {
     fun fetchUserInfo(userId: Int) {
         viewModelScope.launch {
             runCatching {
-                userService.getUserInfo(userId)
+                followerRepository.getUserInfo(userId)
             }.onSuccess {
                 _userInfo.value = it.body()?.data
             }.onFailure {

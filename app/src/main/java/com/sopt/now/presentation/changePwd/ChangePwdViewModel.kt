@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.request.RequestChangePwdDto
 import com.sopt.now.data.remote.ServicePool.userService
+import com.sopt.now.domain.FollowerRepository
 import kotlinx.coroutines.launch
 
-class ChangePwdViewModel : ViewModel() {
+class ChangePwdViewModel(
+    private val followerRepository: FollowerRepository
+) : ViewModel() {
     private val _changePwdState = MutableLiveData<ChangePwdState>()
     val changePwdState: LiveData<ChangePwdState>
         get() = _changePwdState
@@ -16,7 +19,7 @@ class ChangePwdViewModel : ViewModel() {
     fun changePwd(userId: Int, request: RequestChangePwdDto) {
         viewModelScope.launch {
             runCatching {
-                userService.changeUserPwd(userId, request)
+                followerRepository.changeUserPwd(userId, request)
             }.onSuccess {
                 if (it.code() in 200..299) {
                     _changePwdState.value = ChangePwdState(true, "비밀번호 변경 성공")

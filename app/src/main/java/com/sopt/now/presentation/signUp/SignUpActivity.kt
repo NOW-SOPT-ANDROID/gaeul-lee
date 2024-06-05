@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.data.AuthRepositoryImpl
+import com.sopt.now.data.repositoryImpl.AuthRepositoryImpl
 import com.sopt.now.data.remote.ServicePool.authService
 import com.sopt.now.data.remote.request.RequestSignUpDto
 import com.sopt.now.databinding.ActivitySignUpBinding

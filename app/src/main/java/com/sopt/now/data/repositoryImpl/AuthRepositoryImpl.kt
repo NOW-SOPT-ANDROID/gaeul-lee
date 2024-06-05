@@ -1,4 +1,4 @@
-package com.sopt.now.data
+package com.sopt.now.data.repositoryImpl
 
 import com.sopt.now.domain.AuthRepository
 import com.sopt.now.data.remote.request.RequestLoginDto

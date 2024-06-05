@@ -8,15 +8,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
-import com.sopt.now.data.AuthRepositoryImpl
+import com.sopt.now.data.remote.ServicePool.authService
+import com.sopt.now.data.remote.request.RequestLoginDto
+import com.sopt.now.data.repositoryImpl.AuthRepositoryImpl
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.domain.AuthRepository
-import com.sopt.now.data.remote.request.RequestLoginDto
 import com.sopt.now.presentation.main.MainActivity
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.presentation.signUp.SignUpActivity
-import com.sopt.now.data.remote.ServicePool.authService
-import com.sopt.now.data.remote.service.AuthService
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
