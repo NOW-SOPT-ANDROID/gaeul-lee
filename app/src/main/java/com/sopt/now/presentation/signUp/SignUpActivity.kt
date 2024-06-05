@@ -9,12 +9,13 @@ import com.sopt.now.data.remote.ServicePool.authService
 import com.sopt.now.data.remote.request.RequestSignUpDto
 import com.sopt.now.databinding.ActivitySignUpBinding
 import com.sopt.now.domain.AuthRepository
+import com.sopt.now.util.BaseViewModelFactory
 
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     private val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authService) }
     private val viewModel: SignUpViewModel by viewModels {
-        SignUpViewModelFactory(authRepository)
+        BaseViewModelFactory { SignUpViewModel(authRepository) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

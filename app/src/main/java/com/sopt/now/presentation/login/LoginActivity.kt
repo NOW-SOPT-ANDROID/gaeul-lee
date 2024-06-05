@@ -16,12 +16,13 @@ import com.sopt.now.domain.AuthRepository
 import com.sopt.now.presentation.main.MainActivity
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.presentation.signUp.SignUpActivity
+import com.sopt.now.util.BaseViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authService) }
     private val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(authRepository)
+        BaseViewModelFactory { LoginViewModel(authRepository) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

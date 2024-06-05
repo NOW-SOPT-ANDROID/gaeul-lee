@@ -9,7 +9,9 @@ import com.sopt.now.data.remote.ServicePool.userService
 import com.sopt.now.data.repositoryImpl.FollowerRepositoryImpl
 import com.sopt.now.databinding.FragmentHomeBinding
 import com.sopt.now.domain.FollowerRepository
+import com.sopt.now.presentation.changePwd.ChangePwdViewModel
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
+import com.sopt.now.util.BaseViewModelFactory
 import com.sopt.now.util.BindingFragment
 
 class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -21,7 +23,7 @@ class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding:
         )
     }
     private val viewModel: HomeViewModel by activityViewModels {
-        HomeViewModelFactory(followerRepository)
+        BaseViewModelFactory { HomeViewModel(followerRepository) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

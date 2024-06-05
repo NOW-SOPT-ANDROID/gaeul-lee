@@ -17,6 +17,7 @@ import com.sopt.now.presentation.login.LoginActivity
 import com.sopt.now.presentation.login.LoginActivity.Companion.PREF_KEY
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.presentation.main.MainViewModel.Companion.USER_INFO
+import com.sopt.now.util.BaseViewModelFactory
 import com.sopt.now.util.BindingFragment
 
 class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBinding::inflate) {
@@ -27,7 +28,7 @@ class MyPageFragment() : BindingFragment<FragmentMyPageBinding>(FragmentMyPageBi
         )
     }
     private val viewModel: MyPageViewModel by activityViewModels {
-        MyPageViewModelFactory(followerRepository)
+        BaseViewModelFactory { MyPageViewModel(followerRepository) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

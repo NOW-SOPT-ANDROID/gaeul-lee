@@ -11,6 +11,7 @@ import com.sopt.now.data.repositoryImpl.FollowerRepositoryImpl
 import com.sopt.now.databinding.ActivityChangePwdBinding
 import com.sopt.now.domain.FollowerRepository
 import com.sopt.now.presentation.main.MainViewModel.Companion.USER_INFO
+import com.sopt.now.util.BaseViewModelFactory
 
 class ChangePwdActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChangePwdBinding
@@ -21,7 +22,7 @@ class ChangePwdActivity : AppCompatActivity() {
         )
     }
     private val viewModel: ChangePwdViewModel by viewModels {
-        ChangePwdViewModelFactory(followerRepository)
+        BaseViewModelFactory { ChangePwdViewModel(followerRepository) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
