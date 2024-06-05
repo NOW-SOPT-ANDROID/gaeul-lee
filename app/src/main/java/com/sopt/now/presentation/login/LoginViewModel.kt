@@ -19,7 +19,6 @@ class LoginViewModel(
         viewModelScope.launch {
             runCatching {
                 authRepository.login(request)
-                //authService.login(request)
             }.onSuccess {
                 if (it.code() in 200..299) {
                     val userId = it.headers()["location"]

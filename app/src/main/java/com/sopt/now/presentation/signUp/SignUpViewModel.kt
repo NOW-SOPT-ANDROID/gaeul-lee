@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.data.remote.request.RequestSignUpDto
 import com.sopt.now.data.remote.ServicePool.authService
+import com.sopt.now.data.remote.request.RequestSignUpDto
+import com.sopt.now.domain.AuthRepository
 import kotlinx.coroutines.launch
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _signUpState = MutableLiveData<SignUpState>()
     val signUpState: LiveData<SignUpState>
         get() = _signUpState
@@ -16,7 +19,7 @@ class SignUpViewModel : ViewModel() {
     fun signUp(request: RequestSignUpDto) {
         viewModelScope.launch {
             runCatching {
-                authService.signUp(request)
+                authRepository.signUp(request)
             }.onSuccess {
                 if (it.code() in 200..299) {
                     _signUpState.value = SignUpState(true, "회원가입 성공")
