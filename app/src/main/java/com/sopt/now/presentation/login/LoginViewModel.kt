@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.domain.AuthRepository
-import com.sopt.now.data.remote.ServicePool.authService
 import com.sopt.now.data.remote.request.RequestLoginDto
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val authRespository: AuthRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _loginState = MutableLiveData<LoginState>()
     val loginState: LiveData<LoginState>
@@ -19,7 +18,7 @@ class LoginViewModel(
     fun login(request: RequestLoginDto) {
         viewModelScope.launch {
             runCatching {
-                authRespository.login(request)
+                authRepository.login(request)
                 //authService.login(request)
             }.onSuccess {
                 if (it.code() in 200..299) {
