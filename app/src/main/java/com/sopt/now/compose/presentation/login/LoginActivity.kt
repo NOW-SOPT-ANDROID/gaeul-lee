@@ -41,6 +41,7 @@ import com.sopt.now.compose.presentation.signup.SignUpActivity
 import com.sopt.now.compose.util.BaseViewModelFactory
 import com.sopt.now.compose.util.LabeledTextField
 import com.sopt.now.compose.util.NOWSOPTAndroidTheme
+import com.sopt.now.compose.util.PreferencesUtil
 import com.sopt.now.compose.util.RoundedCornerButton
 
 class LoginActivity : ComponentActivity() {
@@ -72,6 +73,13 @@ fun LoginScreen() {
         viewModel(factory = BaseViewModelFactory { LoginViewModel(authRepository) })
     val loginState = viewModel.loginState.observeAsState()
     val userId = viewModel.userId.observeAsState()
+
+    if (PreferencesUtil.getUserId(context) != null) {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra(LOGIN_INFO, PreferencesUtil.getUserId(context))
+        startActivity(context, intent, null)
+    }
+
     loginState.value?.let {
         if (it.isSuccess) {
             Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -117,6 +125,7 @@ fun LoginScreen() {
             buttonText = R.string.login_btn_text,
             onClick = {
                 viewModel.login(
+                    context,
                     RequestLoginDto(
                         authenticationId = id,
                         password = pwd

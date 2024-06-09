@@ -1,11 +1,13 @@
 package com.sopt.now.compose.presentation.login
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.compose.data.remote.request.RequestLoginDto
 import com.sopt.now.compose.domain.AuthRepository
+import com.sopt.now.compose.util.PreferencesUtil
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -19,7 +21,7 @@ class LoginViewModel(
     val userId: LiveData<String>
         get() = _userId
 
-    fun login(request: RequestLoginDto) {
+    fun login(context: Context, request: RequestLoginDto) {
         viewModelScope.launch {
             runCatching {
                 authRepository.login(request)
@@ -28,6 +30,7 @@ class LoginViewModel(
                     _loginState.value = LoginState(true, "로그인 성공")
                     val userId = it.headers()["location"]
                     _userId.value = userId.toString()
+                    userId?.let { id -> PreferencesUtil.saveUserId(context, id) }
                 } else {
                     _loginState.value =
                         it.errorBody()?.string()?.split("\"")

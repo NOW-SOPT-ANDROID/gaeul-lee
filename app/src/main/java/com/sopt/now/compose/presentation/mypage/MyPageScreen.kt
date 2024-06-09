@@ -38,6 +38,7 @@ import com.sopt.now.compose.presentation.login.LoginActivity
 import com.sopt.now.compose.presentation.main.MainViewModel.Companion.LOGIN_INFO
 import com.sopt.now.compose.util.BaseViewModelFactory
 import com.sopt.now.compose.util.NOWSOPTAndroidTheme
+import com.sopt.now.compose.util.PreferencesUtil
 import com.sopt.now.compose.util.RoundedCornerButton
 
 @Composable
@@ -118,6 +119,7 @@ fun MyPageScreen(context: Context, userId: Int) {
         RoundedCornerButton(
             buttonText = R.string.logout_btn_text,
             onClick = {
+                PreferencesUtil.clearUserId(context)
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
