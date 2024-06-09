@@ -1,5 +1,6 @@
 package com.sopt.now.compose.presentation.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -61,6 +62,13 @@ class LoginActivity : ComponentActivity() {
     }
 }
 
+fun navigateToMain(context: Context, userId: String?) {
+    val intent = Intent(context, MainActivity::class.java)
+    intent.putExtra(LOGIN_INFO, userId)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    startActivity(context, intent, null)
+}
+
 @Composable
 fun LoginScreen() {
     var id by remember { mutableStateOf("") }
@@ -72,20 +80,15 @@ fun LoginScreen() {
     val viewModel: LoginViewModel =
         viewModel(factory = BaseViewModelFactory { LoginViewModel(authRepository) })
     val loginState = viewModel.loginState.observeAsState()
-    val userId = viewModel.userId.observeAsState()
 
     if (PreferencesUtil.getUserId(context) != null) {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra(LOGIN_INFO, PreferencesUtil.getUserId(context))
-        startActivity(context, intent, null)
+        navigateToMain(context, PreferencesUtil.getUserId(context))
     }
 
     loginState.value?.let {
         if (it.isSuccess) {
             Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, MainActivity::class.java)
-            intent.putExtra(LOGIN_INFO, userId.value)
-            startActivity(context, intent, null)
+            navigateToMain(context, it.userId)
         } else {
             Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
