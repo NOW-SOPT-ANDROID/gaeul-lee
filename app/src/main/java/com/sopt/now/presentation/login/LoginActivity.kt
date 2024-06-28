@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sopt.now.R
-import com.sopt.now.data.remote.request.RequestLoginDto
+import com.sopt.now.data.dto.request.RequestLoginDto
 import com.sopt.now.databinding.ActivityLoginBinding
 import com.sopt.now.presentation.main.MainActivity
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO

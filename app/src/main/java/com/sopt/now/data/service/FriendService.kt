@@ -1,6 +1,6 @@
-package com.sopt.now.data.remote.service
+package com.sopt.now.data.service
 
-import com.sopt.now.data.remote.response.ResponseFriendsDto
+import com.sopt.now.data.dto.response.ResponseFriendsDto
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET

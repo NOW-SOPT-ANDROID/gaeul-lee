@@ -1,10 +1,10 @@
-package com.sopt.now.data.remote.response
+package com.sopt.now.data.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseSignUpDto(
+data class ResponseChangePwdDto(
     @SerialName("code")
     val code: Int,
     @SerialName("message")

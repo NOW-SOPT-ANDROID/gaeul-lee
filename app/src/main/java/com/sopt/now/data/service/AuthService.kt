@@ -1,9 +1,9 @@
-package com.sopt.now.data.remote.service
+package com.sopt.now.data.service
 
-import com.sopt.now.data.remote.request.RequestLoginDto
-import com.sopt.now.data.remote.request.RequestSignUpDto
-import com.sopt.now.data.remote.response.ResponseLoginDto
-import com.sopt.now.data.remote.response.ResponseSignUpDto
+import com.sopt.now.data.dto.request.RequestLoginDto
+import com.sopt.now.data.dto.request.RequestSignUpDto
+import com.sopt.now.data.dto.response.ResponseLoginDto
+import com.sopt.now.data.dto.response.ResponseSignUpDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

@@ -1,8 +1,8 @@
-package com.sopt.now.data.remote.service
+package com.sopt.now.data.service
 
-import com.sopt.now.data.remote.request.RequestChangePwdDto
-import com.sopt.now.data.remote.response.ResponseChangePwdDto
-import com.sopt.now.data.remote.response.ResponseUserInfoDto
+import com.sopt.now.data.dto.request.RequestChangePwdDto
+import com.sopt.now.data.dto.response.ResponseChangePwdDto
+import com.sopt.now.data.dto.response.ResponseUserInfoDto
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body

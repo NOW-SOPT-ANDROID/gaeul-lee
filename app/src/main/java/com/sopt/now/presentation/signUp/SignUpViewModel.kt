@@ -1,12 +1,12 @@
 package com.sopt.now.presentation.signUp
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.data.remote.ServicePool.authService
-import com.sopt.now.data.remote.request.RequestSignUpDto
-import com.sopt.now.domain.AuthRepository
+import com.sopt.now.data.dto.request.RequestSignUpDto
+import com.sopt.now.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

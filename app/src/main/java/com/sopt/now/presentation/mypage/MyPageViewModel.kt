@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.data.remote.response.ResponseUserInfoDto
-import com.sopt.now.domain.FollowerRepository
+import com.sopt.now.data.dto.response.ResponseUserInfoDto
+import com.sopt.now.domain.repository.FollowerRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
