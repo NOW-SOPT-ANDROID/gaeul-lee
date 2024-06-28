@@ -1,4 +1,4 @@
-package com.sopt.now.data.repoImpl
+package com.sopt.now.data.repositoryImpl
 
 import com.sopt.now.data.dto.request.RequestChangePwdDto
 import com.sopt.now.data.dto.response.ResponseChangePwdDto

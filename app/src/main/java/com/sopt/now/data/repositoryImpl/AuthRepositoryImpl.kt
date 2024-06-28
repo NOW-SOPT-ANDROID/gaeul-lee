@@ -1,4 +1,4 @@
-package com.sopt.now.data.repoImpl
+package com.sopt.now.data.repositoryImpl
 
 import com.sopt.now.data.dto.request.RequestLoginDto
 import com.sopt.now.data.dto.request.RequestSignUpDto

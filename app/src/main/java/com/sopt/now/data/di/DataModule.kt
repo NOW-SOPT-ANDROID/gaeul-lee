@@ -1,7 +1,7 @@
 package com.sopt.now.data.di
 
-import com.sopt.now.data.repoImpl.AuthRepositoryImpl
-import com.sopt.now.data.repoImpl.FollowerRepositoryImpl
+import com.sopt.now.data.repositoryImpl.AuthRepositoryImpl
+import com.sopt.now.data.repositoryImpl.FollowerRepositoryImpl
 import com.sopt.now.data.service.AuthService
 import com.sopt.now.data.service.FriendService
 import com.sopt.now.data.service.UserService
