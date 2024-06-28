@@ -4,27 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.sopt.now.data.remote.ServicePool.friendService
-import com.sopt.now.data.remote.ServicePool.userService
-import com.sopt.now.data.repositoryImpl.FollowerRepositoryImpl
 import com.sopt.now.databinding.FragmentHomeBinding
-import com.sopt.now.domain.FollowerRepository
-import com.sopt.now.presentation.changePwd.ChangePwdViewModel
 import com.sopt.now.presentation.main.MainViewModel.Companion.LOGIN_INFO
-import com.sopt.now.util.BaseViewModelFactory
 import com.sopt.now.util.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment() : BindingFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
     private val friendAdapter by lazy { FriendAdapter() }
-    private val followerRepository: FollowerRepository by lazy {
-        FollowerRepositoryImpl(
-            userService,
-            friendService
-        )
-    }
-    private val viewModel: HomeViewModel by activityViewModels {
-        BaseViewModelFactory { HomeViewModel(followerRepository) }
-    }
+    private val viewModel: HomeViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

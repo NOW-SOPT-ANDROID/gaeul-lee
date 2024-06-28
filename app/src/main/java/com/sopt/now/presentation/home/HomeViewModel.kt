@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.data.remote.ServicePool.friendService
-import com.sopt.now.data.remote.ServicePool.userService
 import com.sopt.now.domain.FollowerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val followerRepository: FollowerRepository
 ) : ViewModel() {
     private val _friends = MutableLiveData<List<Friend>>()

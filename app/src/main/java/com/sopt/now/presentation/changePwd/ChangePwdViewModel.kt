@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.request.RequestChangePwdDto
-import com.sopt.now.data.remote.ServicePool.userService
 import com.sopt.now.domain.FollowerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChangePwdViewModel(
+@HiltViewModel
+class ChangePwdViewModel @Inject constructor(
     private val followerRepository: FollowerRepository
 ) : ViewModel() {
     private val _changePwdState = MutableLiveData<ChangePwdState>()

@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.ServicePool.authService
 import com.sopt.now.data.remote.request.RequestSignUpDto
 import com.sopt.now.domain.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel(
+@HiltViewModel
+class SignUpViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _signUpState = MutableLiveData<SignUpState>()

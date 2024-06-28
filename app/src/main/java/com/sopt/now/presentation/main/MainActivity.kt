@@ -8,8 +8,9 @@ import com.sopt.now.databinding.ActivityMainBinding
 import com.sopt.now.presentation.home.HomeFragment
 import com.sopt.now.presentation.mypage.MyPageFragment
 import com.sopt.now.presentation.search.SearchFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {

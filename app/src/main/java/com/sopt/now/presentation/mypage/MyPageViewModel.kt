@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.remote.response.ResponseUserInfoDto
-import com.sopt.now.data.remote.ServicePool.userService
 import com.sopt.now.domain.FollowerRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyPageViewModel(
+class MyPageViewModel @Inject constructor(
     private val followerRepository: FollowerRepository
 ) : ViewModel() {
     private val _userInfo = MutableLiveData<ResponseUserInfoDto>()

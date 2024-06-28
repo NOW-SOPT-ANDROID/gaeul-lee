@@ -4,19 +4,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.sopt.now.data.repositoryImpl.AuthRepositoryImpl
-import com.sopt.now.data.remote.ServicePool.authService
 import com.sopt.now.data.remote.request.RequestSignUpDto
 import com.sopt.now.databinding.ActivitySignUpBinding
-import com.sopt.now.domain.AuthRepository
-import com.sopt.now.util.BaseViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
-    private val authRepository: AuthRepository by lazy { AuthRepositoryImpl(authService) }
-    private val viewModel: SignUpViewModel by viewModels {
-        BaseViewModelFactory { SignUpViewModel(authRepository) }
-    }
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
