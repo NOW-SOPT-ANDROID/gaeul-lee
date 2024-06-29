@@ -6,12 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.dto.response.ResponseUserInfoDto
-import com.sopt.now.domain.repository.FollowerRepository
+import com.sopt.now.domain.repository.UserRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyPageViewModel @Inject constructor(
-    private val followerRepository: FollowerRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _userInfo = MutableLiveData<ResponseUserInfoDto>()
     val userInfo: LiveData<ResponseUserInfoDto>
@@ -20,7 +20,7 @@ class MyPageViewModel @Inject constructor(
     fun fetchUserInfo(userId: Int) {
         viewModelScope.launch {
             runCatching {
-                followerRepository.getUserInfo(userId)
+                userRepository.getUserInfo(userId)
             }.onSuccess {
                 _userInfo.postValue(it.body())
             }.onFailure {

@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sopt.now.domain.repository.FollowerRepository
+import com.sopt.now.domain.repository.FriendRepository
+import com.sopt.now.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val followerRepository: FollowerRepository
+    private val friendRepository: FriendRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _friends = MutableLiveData<List<Friend>>()
     val friends: LiveData<List<Friend>>
@@ -26,7 +28,7 @@ class HomeViewModel @Inject constructor(
     fun fetchFriends(page: Int) {
         viewModelScope.launch {
             runCatching {
-                followerRepository.getFriends(page)
+                friendRepository.getFriends(page)
             }.onSuccess {
                 val friends = it.body()?.data ?: emptyList()
                 _friends.postValue(friends.map { Friend(it.avatar, it.firstName, it.email) })
@@ -45,7 +47,7 @@ class HomeViewModel @Inject constructor(
     fun fetchUserInfo(userId: Int) {
         viewModelScope.launch {
             runCatching {
-                followerRepository.getUserInfo(userId)
+                userRepository.getUserInfo(userId)
             }.onSuccess {
                 _userInfo.value = it.body()?.data
             }.onFailure {

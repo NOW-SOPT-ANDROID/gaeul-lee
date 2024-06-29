@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sopt.now.data.dto.request.RequestChangePwdDto
-import com.sopt.now.domain.repository.FollowerRepository
+import com.sopt.now.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ChangePwdViewModel @Inject constructor(
-    private val followerRepository: FollowerRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _changePwdState = MutableLiveData<ChangePwdState>()
     val changePwdState: LiveData<ChangePwdState>
@@ -21,7 +21,7 @@ class ChangePwdViewModel @Inject constructor(
     fun changePwd(userId: Int, request: RequestChangePwdDto) {
         viewModelScope.launch {
             runCatching {
-                followerRepository.changeUserPwd(userId, request)
+                userRepository.changeUserPwd(userId, request)
             }.onSuccess {
                 if (it.code() in 200..299) {
                     _changePwdState.value = ChangePwdState(true, "비밀번호 변경 성공")
